@@ -1,26 +1,4 @@
-:root {
-    --navbarcolor: #407f8a;
-    --navbartextcolor: black;
-    --navbarfontsize: 18px;
-    --stdfont: Arial, sans-serif;
-    --stdfontsize: 18px;
-    --mobfontsize: 26px;
-    --stdborderradius: 15px;
-    --stdhovercolor: #093a42;
-}
-
-
-
-/* Reset some basic elements */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-body {
-    font-family: var(--stdfont);
-}
+@import './constants.css';
 
 nav {
     display: flex;
@@ -46,6 +24,11 @@ nav {
     font-size: var(--navbarfontsize);
     font-weight: bold;
     padding: 10px;
+}
+
+.nav-link-active a {
+    background-color: var(--stdhovercolor);
+    color: #fff;
 }
 
 .nav-links a:focus,
@@ -97,7 +80,7 @@ nav {
     .burger div {
         width: 25px;
         height: 3px;
-        background-color: white;
+        background-color: black;
         margin: 5px;
         transition: all 0.3s ease;
     }

@@ -1,0 +1,10 @@
+:root {
+    --navbarcolor: #407f8a;
+    --navbartextcolor: black;
+    --navbarfontsize: 18px;
+    --stdfont: Arial, sans-serif;
+    --stdfontsize: 18px;
+    --mobfontsize: 26px;
+    --stdborderradius: 15px;
+    --stdhovercolor: #093a42;
+}
