@@ -10,3 +10,63 @@
 body {
     font-family: var(--stdfont);
 }
+
+form {
+    border-radius: var(--stdborderradius);
+    background-color: var(--navbarcolor);
+    padding: 20px;
+    font-size: var(--stdfontsize);
+    max-width: 400px;
+}
+
+form input[type="submit"], input[type="button"] {
+    display: inline;
+    margin-top: 10px;
+    background-color: var(--stdhovercolor);
+    color: var(--altcolor);
+    width: auto;
+}
+
+input[type="submit"], input[type="button"]:hover {
+    cursor: pointer;
+}
+
+input {
+    border-radius: var(--stdborderradius);
+    font-size: var(--stdfontsize);
+    padding: 5px;
+    display: block;
+    width: 100%;
+    margin: 5px;
+    outline: none;
+}
+
+input:focus {
+    border: 3px solid var(--stdhovercolor);
+}
+
+.main-div {
+    margin: 10px;
+}
+
+.list-table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+.list-table tr {
+    border-bottom: 1em solid transparent;
+    /* padding: 5px; */
+    border-radius: 10px;
+}
+
+.list-table td {
+    text-align: center;
+    border-right: 1em solid transparent;
+    border-left: 1em solid transparent;
+}
+
+.list-table tr:hover{
+    cursor: pointer;
+    box-shadow: 0 0 0 2px var(--navbarcolor)
+}

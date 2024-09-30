@@ -7,4 +7,8 @@
     --mobfontsize: 26px;
     --stdborderradius: 15px;
     --stdhovercolor: #093a42;
+    --formbackgroundcolor: #093a42;
+    --formfontsize: 26px;
+    --stdcolor: black;
+    --altcolor: white;
 }
