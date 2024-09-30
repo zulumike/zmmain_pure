@@ -1,29 +1,50 @@
-export async function readAllCustomers() {
+// export async function readAllCustomers() {
 
+//     try {
+//         const response = await fetch('/data/customers.json');
+//         if (!response.ok) {
+//             throw new Error('Response status: ${response.status}');
+//         }
+//         const json = await response.json();
+//         return json.customers
+//     }
+//     catch (error) {
+//         console.error(error.message);
+//     }
+// }
+
+export async function readAllCustomers() {
+    const query = `
+        {
+            customers {
+                items {
+                    id
+                    name
+                }
+            }
+        }`;
+    const endpoint = '/data-api/graphql';
+    const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: query })
+    });
+    const result = await response.json();
+    console.table(result.data.customers.items);
+    return result.data.customers.items;
+}
+
+export async function createNewCustomer(customerData) {
     try {
-        const response = await fetch('/data/customers.json');
+        const response = await fetch('/data/customers.json', {
+            method: "POST",
+            body: customerData,
+        });
         if (!response.ok) {
             throw new Error('Response status: ${response.status}');
         }
-        const json = await response.json();
-        return json.customers
     }
     catch (error) {
         console.error(error.message);
     }
-
-    // fetch('/data/customers.json')
-    //     .then((res) => {
-    //         if (!res.ok) {
-    //             throw new Error ('HTTP error! Status: ', res.status);
-    //         }
-    //         return res.json();
-    //     })
-    //     .then((data) => {
-    //         console.log(data)
-    //         return data;
-    //     })
-    //     .catch((error) => {
-    //         console.error('Unable to fetch data: ', error)
-    //     });
 }
