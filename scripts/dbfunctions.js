@@ -20,6 +20,12 @@ export async function readAllCustomers() {
                 items {
                     id
                     name
+                    address
+                    city
+                    phone
+                    email
+                    created
+                    created_by
                 }
             }
         }`;
