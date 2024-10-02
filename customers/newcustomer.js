@@ -1,8 +1,10 @@
-import { createNewCustomer } from "/scripts/dbfunctions.js";
+import { createCustomer } from "/scripts/dbfunctions.js";
 
 const customerForm = document.getElementById("customerform");
-customerForm.addEventListener('submit', (event) => {
+customerForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const customerFormData = new FormData(customerForm);
-    createNewCustomer(customerFormData);
+    const customerData = Object.fromEntries(customerFormData);
+    await createCustomer(customerData);
+    window.location.replace('/customers/customerlist.html');
 })

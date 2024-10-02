@@ -1,3 +1,81 @@
+export async function getCompany(id) {
+
+    const gql = `
+      query getById($id: ID!) {
+        company_by_pk(id: $id) {
+            id
+            name
+            address
+            city
+            phone
+            email
+            nrSeries {
+                customer
+                order
+                invoice
+                cost    
+            }
+        }
+      }`;
+  
+    const query = {
+      query: gql,
+      variables: {
+        id: id,
+      },
+    };
+  
+    const endpoint = "/data-api/graphql";
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(query),
+    });
+    const result = await response.json();
+    console.table(result.data.company_by_pk);
+    return result.data.company_by_pk;
+  }
+
+  export async function updateCompany(id, data) {
+
+    const gql = `
+      mutation update($id: ID!, $_partitionKeyValue: String!, $item: UpdatecompanyInput!) {
+        updatecompany(id: $id, _partitionKeyValue: $_partitionKeyValue, item: $item) {
+            id
+            name
+            address
+            city
+            phone
+            email
+            nrSeries {
+                customer
+                order
+                invoice
+                cost    
+            }
+        }
+      }`;
+  
+    const query = {
+      query: gql,
+      variables: {
+        id: id,
+        _partitionKeyValue: id,
+        item: data
+      } 
+    };
+  
+    const endpoint = "/data-api/graphql";
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(query)
+    });
+  
+    const result = await res.json();
+    console.table(result.data.updatecompany);
+  }
+
 export async function readAllCustomers() {
     const query = `
         {
@@ -25,45 +103,116 @@ export async function readAllCustomers() {
     return result.data.customers.items;
 }
 
-export async function getCustomer(custId) {
-    const id = '1';
+export async function getCustomer(id) {
+
     const gql = `
-    query getById($id: ID!) {
-      customer_by_pk(id: $id) {
-        id
-        name
-      }
-    }`;
-
+      query getById($id: ID!) {
+        customers_by_pk(id: $id) {
+            id
+            name
+            address
+            city
+            phone
+            email
+            created
+            created_by
+        }
+      }`;
+  
     const query = {
-        query: gql,
-        variables: {
-            id: id,
-        },
+      query: gql,
+      variables: {
+        id: id,
+      },
     };
-
+  
     const endpoint = "/data-api/graphql";
     const response = await fetch(endpoint, {
-        method: "POST",
-        header: { "Content-Type": "application/json" },
-        body: JSON.stringify(query),
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(query),
     });
     const result = await response.json();
-    console.table(result.data.customer_by_pk);
-    return result.data.customer_by_pk;
-}
+    console.table(result.data.customers_by_pk);
+    return result.data.customers_by_pk;
+  }
 
-export async function createNewCustomer(customerData) {
-    try {
-        const response = await fetch('/data/customers.json', {
-            method: "POST",
-            body: customerData,
-        });
-        if (!response.ok) {
-            throw new Error('Response status: ${response.status}');
+export async function updateCustomer(id, data) {
+
+    const gql = `
+      mutation update($id: ID!, $_partitionKeyValue: String!, $item: UpdatecustomersInput!) {
+        updatecustomers(id: $id, _partitionKeyValue: $_partitionKeyValue, item: $item) {
+            id
+            name
+            address
+            city
+            phone
+            email
+            created
+            created_by
         }
-    }
-    catch (error) {
-        console.error(error.message);
-    }
-}
+      }`;
+  
+    const query = {
+      query: gql,
+      variables: {
+        id: id,
+        _partitionKeyValue: id,
+        item: data
+      } 
+    };
+  
+    const endpoint = "/data-api/graphql";
+    const res = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(query)
+    });
+  
+    const result = await res.json();
+    console.table(result.data.updatecustomers);
+  }
+
+export async function createCustomer(data) {
+
+    const company = await getCompany('1');
+    console.log(company);
+    company.nrSeries.customer++
+    console.log(company.nrSeries.customer);
+    data.id = company.nrSeries.customer.toString();
+    const timeNow = new Date();
+    data.created = timeNow;
+
+    const gql = `
+      mutation create($item: CreatecustomersInput!) {
+        createcustomers(item: $item) {
+            id
+            name
+            address
+            city
+            phone
+            email
+            created
+            created_by
+        }
+      }`;
+    
+    const query = {
+      query: gql,
+      variables: {
+        item: data
+      } 
+    };
+    
+    const endpoint = "/data-api/graphql";
+    const result = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(query)
+    });
+  
+    const response = await result.json();
+    console.table(response.data.createcustomers);
+
+    await updateCompany('1', company)
+  }

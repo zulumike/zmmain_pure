@@ -1,5 +1,5 @@
 {
-  "$schema": "https://github.com/Azure/data-api-builder/releases/download/v1.1.7/dab.draft.schema.json",
+  "$schema": "https://github.com/Azure/data-api-builder/releases/latest/download/dab.draft.schema.json",
   "data-source": {
     "database-type": "cosmosdb_nosql",
     "connection-string": "@env('DATABASE_CONNECTION_STRING')",
@@ -33,6 +33,24 @@
   "entities": {
     "customers": {
       "source": "customers",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
+    },
+    "company": {
+      "source": "company",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
+    },
+    "NrSeries": {
+      "source": "a",
       "permissions": [
         {
           "actions": ["*"],

@@ -10,6 +10,25 @@ type Book @model {
 }
 
 """
+type NrSeries {
+  customer: Int
+  order: Int
+  invoice: Int
+  cost: Int
+}
+
+type company @model {
+  id: ID
+  name: String
+  address: String
+  zip: String
+  city: String
+  phone: String
+  email: String
+  bankAccount: String
+  nrSeries: NrSeries
+}
+
 type customers @model {
   id: ID
   name: String

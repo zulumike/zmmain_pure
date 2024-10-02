@@ -1,4 +1,4 @@
-import { readAllCustomers, getCustomer } from "/scripts/dbfunctions.js";
+import { readAllCustomers, getCustomer, updateCustomer, createCustomer } from "/scripts/dbfunctions.js";
 
 async function getCustomerList() {
     const customerList = await readAllCustomers();
@@ -21,5 +21,4 @@ async function getCustomerById(custId) {
     await getCustomer(custId);
 }
 
-// getCustomerList();
-getCustomerById('1');
+getCustomerList();
