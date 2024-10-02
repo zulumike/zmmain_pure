@@ -32,7 +32,6 @@ export async function getCompany(id) {
       body: JSON.stringify(query),
     });
     const result = await response.json();
-    console.table(result.data.company_by_pk);
     return result.data.company_by_pk;
   }
 
@@ -73,7 +72,7 @@ export async function getCompany(id) {
     });
   
     const result = await res.json();
-    console.table(result.data.updatecompany);
+    return result.data.updatecompany;
   }
 
 export async function readAllCustomers() {
@@ -99,7 +98,6 @@ export async function readAllCustomers() {
         body: JSON.stringify({ query: query })
     });
     const result = await response.json();
-    console.table(result.data.customers.items);
     return result.data.customers.items;
 }
 
@@ -133,7 +131,6 @@ export async function getCustomer(id) {
       body: JSON.stringify(query),
     });
     const result = await response.json();
-    console.table(result.data.customers_by_pk);
     return result.data.customers_by_pk;
   }
 
@@ -170,7 +167,7 @@ export async function updateCustomer(id, data) {
     });
   
     const result = await res.json();
-    console.table(result.data.updatecustomers);
+    return result.data.updatecustomers;
   }
 
 export async function createCustomer(data) {
@@ -212,7 +209,8 @@ export async function createCustomer(data) {
     });
   
     const response = await result.json();
-    console.table(response.data.createcustomers);
-
+    
     await updateCompany('1', company)
+    
+    return response.data.createcustomers;
   }
