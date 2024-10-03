@@ -31,21 +31,25 @@
         <script src="/scripts/nav.js"></script>
         <main>
             <div class="main-div">
-                <a href="newcustomer.html"><button>Ny kunde</button></a>
-                <table id="customer-table" class="list-table">
-                    <thead>
-                        <tr>
-                            <th>Nr</th>
-                            <th>Navn</th>
-                            <th>Sted</th>
-                        </tr>
-                    </thead>
-                    <tbody id="cust-table-body">
-
-                    </tbody>
-                </table>
-            </div> 
-            <script type="module" src="customerlist.js"></script>
+                <form id="customerform">
+                    <label for="name">Kundenavn: </label>
+                    <input type="text" id="name" name="name" required autofocus>
+                    <label for="address">Adresse: </label>
+                    <input type="text" id="address" name="address">
+                    <label for="zip">Postnummer: </label>
+                    <input type="number" id="zip" name="zip">
+                    <label for="city">Poststed: </label>
+                    <input type="text" id="city" name="city">
+                    <label for="phone">Telefonnummer: </label>
+                    <input type="tel" id="phone" name="phone" pattern="[0-9]{8}">
+                    <label for="email">E-post: </label>
+                    <input type="email" id="email" name="email">
+                    <input type="submit" value="Lagre">
+                    <input type="button" value="Avbryt" onclick="window.location.replace('/customers/customerlist.html')">
+                    <input type="button" value="Slett" onclick="if(confirm('Sikker på at du vil slette?')) deleteCustomer()">
+                </form>
+            </div>
+            <script type="module" src="editcustomer.js"></script>
         </main>
   </body>
 </html>

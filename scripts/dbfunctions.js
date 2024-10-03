@@ -109,6 +109,7 @@ export async function getCustomer(id) {
             id
             name
             address
+            zip
             city
             phone
             email
@@ -211,6 +212,34 @@ export async function createCustomer(data) {
     const response = await result.json();
     
     await updateCompany('1', company)
-    
+
     return response.data.createcustomers;
+  }
+
+  export async function deleteCustomer(id) {
+
+    const gql = `
+      mutation del($id: ID!, $_partitionKeyValue: String!) {
+        deletecustomers(id: $id, _partitionKeyValue: $_partitionKeyValue) {
+          id
+        }
+      }`;
+  
+    const query = {
+      query: gql,
+      variables: {
+        id: id,
+      _partitionKeyValue: id
+      }
+    };
+  
+    const endpoint = "/data-api/graphql";
+    const response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(query)
+    });
+  
+    const result = await response.json();
+    console.log(`Record deleted: ${ JSON.stringify(result.data) }`);
   }

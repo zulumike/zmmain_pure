@@ -12,7 +12,7 @@ async function getCustomerList() {
         custName.innerText = customerList[i].name;
         custCity.innerText = customerList[i].city;
         newRow.addEventListener('click', () => {
-            window.location.href = 'newcustomer.html';
+            window.location.href = 'editcustomer.html?id=' + customerList[i].id;
         })
     }
 }
