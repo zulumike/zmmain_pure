@@ -46,7 +46,9 @@
                     <input type="email" id="email" name="email">
                     <input type="submit" value="Lagre">
                     <input type="button" value="Avbryt" onclick="window.location.replace('/customers/customerlist.html')">
-                    <input type="button" value="Slett" onclick="if(confirm('Sikker på at du vil slette?')) deleteCustomer()">
+                    <input type="button" id="delBtn" value="Slett">
+                    <p id="created-text">Opprettet: </p>
+                    <p id="updated-text">Sist oppdatert: </p>
                 </form>
             </div>
             <script type="module" src="editcustomer.js"></script>
