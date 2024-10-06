@@ -45,6 +45,24 @@ input:focus {
     border: 3px solid var(--stdhovercolor);
 }
 
+textarea {
+    border-radius: var(--stdborderradius);
+    font-size: var(--stdfontsize);
+    padding: 5px;
+    display: block;
+    width: 100%;
+    margin: 5px;
+    outline: none;
+}
+
+textarea:focus {
+    border: 3px solid var(--stdhovercolor);
+}
+
+p {
+    font-size: var(--smallfontsize);
+}
+
 .main-div {
     margin: 10px;
 }

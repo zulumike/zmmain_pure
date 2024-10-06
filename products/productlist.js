@@ -11,9 +11,9 @@ async function getDocumentList() {
             const custCity = newRow.insertCell(2);
             custNr.innerText = documentList[i].id;
             custName.innerText = documentList[i].name;
-            custCity.innerText = documentList[i].city;
+            custCity.innerText = documentList[i].price;
             newRow.addEventListener('click', () => {
-                window.location.href = 'editcustomer.html?id=' + documentList[i].id;
+                window.location.href = 'editproduct.html?id=' + documentList[i].id;
             })
         }
     }

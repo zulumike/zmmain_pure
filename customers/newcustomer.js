@@ -1,10 +1,10 @@
-import { createCustomer } from "/scripts/dbfunctions.js";
+import { createDocument } from "./dbfunctions.js";
 
-const customerForm = document.getElementById("customerform");
-customerForm.addEventListener('submit', async (event) => {
+const documentForm = document.getElementById("documentform");
+documentForm.addEventListener('submit', async (event) => {
     event.preventDefault();
-    const customerFormData = new FormData(customerForm);
-    const customerData = Object.fromEntries(customerFormData);
-    await createCustomer(customerData);
+    const documentFormData = new FormData(documentForm);
+    const documentData = Object.fromEntries(documentFormData);
+    await createDocument(documentData);
     window.location.replace('/customers/customerlist.html');
 })

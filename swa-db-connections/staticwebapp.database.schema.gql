@@ -43,3 +43,20 @@ type customers @model {
   updated_by: String
   deleted: Boolean
 }
+
+type products @model {
+  id: ID
+  name: String
+  description: String
+  unit: String
+  price: Float
+  storage: Float
+  account: Int
+  active: Boolean
+  webshop: Boolean
+  image: String
+  created: String
+  created_by: String
+  updated: String
+  updated_by: String
+}

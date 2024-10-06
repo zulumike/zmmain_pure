@@ -6,18 +6,20 @@ documentForm.addEventListener('submit', async (event) => {
     const documentFormData = new FormData(documentForm);
     const documentData = Object.fromEntries(documentFormData);
     await updateDocument(customerId, documentData);
-    window.location.replace('/customers/customerlist.html');
+    window.location.replace('/products/productlist.html');
 })
 
 async function populatedocumentForm(customerId) {
     const documentData = await getDocument(customerId)
-    document.getElementById('formheading').textContent = 'Kundenr: ' + documentData.id;
+    document.getElementById('id').value = documentData.id;
     document.getElementById('name').value = documentData.name;
-    document.getElementById('address').value = documentData.address;
-    document.getElementById('zip').value = documentData.zip;
-    document.getElementById('city').value = documentData.city;
-    document.getElementById('phone').value = documentData.phone;
-    document.getElementById('email').value = documentData.email;
+    document.getElementById('description').value = documentData.description;
+    document.getElementById('unit').value = documentData.unit;
+    document.getElementById('price').value = documentData.price;
+    document.getElementById('storage').value = documentData.storage;
+    document.getElementById('account').value = documentData.account;
+    document.getElementById('active').checked = documentData.active;
+    document.getElementById('webshop').checked = documentData.webshop;
     const createdText = document.getElementById('created-text');
     const updatedText = document.getElementById('updated-text');
     const createdTime = new Date(documentData.created);
@@ -32,9 +34,9 @@ async function populatedocumentForm(customerId) {
 }
 
 async function deleteDocumentById() {
-    if (confirm('Er du sikker på at du vil slette kunden?')) {
+    if (confirm('Er du sikker på at du vil slette produktet?')) {
         await deleteDocument(documentId);
-        window.location.replace('/customers/customerlist.html');
+        window.location.replace('/products/productlist.html');
     }
 }
 

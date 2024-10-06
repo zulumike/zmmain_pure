@@ -13,11 +13,11 @@
         <nav id="navbar">
             <ul class="nav-links">
                 <li><a href="/">Hjem</a></li>
-                <li class="nav-link-active"><a href="/customers/customerlist.html">Kunder</a></li>
+                <li><a href="/customers/customerlist.html">Kunder</a></li>
                 <li><a href="/orders/orderlist.html">Ordrer</a></li>
                 <li><a href="/invoices/invoicelist.html">Faktura</a></li>
                 <li><a href="/costs/costlist.html">Billag</a></li>
-                <li><a href="/admin/admin.html">Admin</a></li>
+                <li class="nav-link-active"><a href="/admin/admin.html">Admin</a></li>
             </ul>
             <div class="burger">
                 <div class="line1"></div>
@@ -25,19 +25,19 @@
                 <div class="line3"></div>
             </div>
             <div class="burger">
-                <h1>Kunder</h1>
+                <h1>Produkt</h1>
             </div>
         </nav>
         <script src="/scripts/nav.js"></script>
         <main>
             <div class="main-div">
-                <a href="newcustomer.html"><button>Ny kunde</button></a>
+                <a href="newproduct.html"><button>Nytt produkt</button></a>
                 <table id="list-table" class="list-table">
                     <thead>
                         <tr>
                             <th>Nr</th>
                             <th>Navn</th>
-                            <th>Sted</th>
+                            <th>Pris</th>
                         </tr>
                     </thead>
                     <tbody id="table-body">
@@ -45,7 +45,7 @@
                     </tbody>
                 </table>
             </div> 
-            <script type="module" src="customerlist.js"></script>
+            <script type="module" src="productlist.js"></script>
         </main>
   </body>
 </html>

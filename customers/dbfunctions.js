@@ -75,7 +75,7 @@ export async function getCompany(id) {
     return result.data.updatecompany;
   }
 
-export async function readAllCustomers() {
+export async function readAllDocuments() {
     const query = `
         {
             customers {
@@ -104,7 +104,7 @@ export async function readAllCustomers() {
     return result.data.customers.items;
 }
 
-export async function getCustomer(id) {
+export async function getDocument(id) {
 
     const gql = `
       query getById($id: ID!) {
@@ -141,8 +141,8 @@ export async function getCustomer(id) {
     return result.data.customers_by_pk;
   }
 
-export async function updateCustomer(id, data) {
-    const oldData = await getCustomer(id);
+export async function updateDocument(id, data) {
+    const oldData = await getDocument(id);
     data.created = oldData.created;
     data.created_by = oldData.created_by;
     data.id = id;
@@ -162,6 +162,7 @@ export async function updateCustomer(id, data) {
             created_by
             updated
             updated_by
+            deleted
         }
       }`;
   
@@ -185,15 +186,14 @@ export async function updateCustomer(id, data) {
     return result.data.updatecustomers;
   }
 
-export async function createCustomer(data) {
+export async function createDocument(data) {
 
     const company = await getCompany('1');
-    console.log(company);
     company.nrSeries.customer++
-    console.log(company.nrSeries.customer);
     data.id = company.nrSeries.customer.toString();
     const timeNow = new Date();
     data.created = timeNow;
+    data.deleted = false;
 
     const gql = `
       mutation create($item: CreatecustomersInput!) {
@@ -206,6 +206,9 @@ export async function createCustomer(data) {
             email
             created
             created_by
+            updated
+            updated_by
+            deleted
         }
       }`;
     
@@ -230,36 +233,9 @@ export async function createCustomer(data) {
     return response.data.createcustomers;
   }
 
-//   export async function deleteCustomer(id) {
-
-//     const gql = `
-//       mutation del($id: ID!, $_partitionKeyValue: String!) {
-//         deletecustomers(id: $id, _partitionKeyValue: $_partitionKeyValue) {
-//           id
-//         }
-//       }`;
-  
-//     const query = {
-//       query: gql,
-//       variables: {
-//         id: id,
-//       _partitionKeyValue: id
-//       }
-//     };
-  
-//     const endpoint = "/data-api/graphql";
-//     const response = await fetch(endpoint, {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(query)
-//     });
-  
-//     const result = await response.json();
-//     console.log(`Record deleted: ${ JSON.stringify(result.data) }`);
-//   }
-
-  export async function deleteCustomer(id) {
-    const oldData = await getCustomer(id);
+//   Soft delete:
+  export async function deleteDocument(id) {
+    const oldData = await getDocument(id);
     const data = oldData;
     const timeNow = new Date();
     data.updated = timeNow;
@@ -301,3 +277,32 @@ export async function createCustomer(data) {
     const result = await res.json();
     return result.data.updatecustomers;
   }
+
+//   Hard delete:
+//   export async function deleteDocument(id) {
+
+//     const gql = `
+//       mutation del($id: ID!, $_partitionKeyValue: String!) {
+//         deletecustomers(id: $id, _partitionKeyValue: $_partitionKeyValue) {
+//           id
+//         }
+//       }`;
+  
+//     const query = {
+//       query: gql,
+//       variables: {
+//         id: id,
+//       _partitionKeyValue: id
+//       }
+//     };
+  
+//     const endpoint = "/data-api/graphql";
+//     const response = await fetch(endpoint, {
+//       method: "POST",
+//       headers: { "Content-Type": "application/json" },
+//       body: JSON.stringify(query)
+//     });
+  
+//     const result = await response.json();
+//     console.log(`Record deleted: ${ JSON.stringify(result.data) }`);
+//   }
