@@ -13,14 +13,14 @@ documentForm.addEventListener('submit', async (event) => {
     } 
     else {
         documentData.active = false;
-    }
+    };
     if (documentData.webshop === 'on') {
         documentData.active = true
     }
     else {
         documentData.webshop = false;
-    }
-    console.table(documentData);
+    };
+    console.log(documentData.webshop);
     await createDocument(documentData);
     window.location.replace('/products/productlist.html');
 })

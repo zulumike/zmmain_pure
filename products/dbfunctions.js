@@ -1,79 +1,4 @@
-export async function getCompany(id) {
-
-    const gql = `
-      query getById($id: ID!) {
-        company_by_pk(id: $id) {
-            id
-            name
-            address
-            city
-            phone
-            email
-            nrSeries {
-                customer
-                order
-                invoice
-                cost    
-            }
-        }
-      }`;
-  
-    const query = {
-      query: gql,
-      variables: {
-        id: id,
-      },
-    };
-  
-    const endpoint = "/data-api/graphql";
-    const response = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(query),
-    });
-    const result = await response.json();
-    return result.data.company_by_pk;
-  }
-
-  export async function updateCompany(id, data) {
-
-    const gql = `
-      mutation update($id: ID!, $_partitionKeyValue: String!, $item: UpdatecompanyInput!) {
-        updatecompany(id: $id, _partitionKeyValue: $_partitionKeyValue, item: $item) {
-            id
-            name
-            address
-            city
-            phone
-            email
-            nrSeries {
-                customer
-                order
-                invoice
-                cost    
-            }
-        }
-      }`;
-  
-    const query = {
-      query: gql,
-      variables: {
-        id: id,
-        _partitionKeyValue: id,
-        item: data
-      } 
-    };
-  
-    const endpoint = "/data-api/graphql";
-    const res = await fetch(endpoint, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(query)
-    });
-  
-    const result = await res.json();
-    return result.data.updatecompany;
-  }
+import { getUserInfo } from "../scripts/auth.js";
 
 export async function readAllDocuments() {
     const query = `
@@ -153,6 +78,8 @@ export async function updateDocument(id, data) {
     data.id = id;
     const timeNow = new Date();
     data.updated = timeNow;
+    const currentUser = await getUserInfo();
+    data.updated_by = currentUser.userDetails;
 
     const gql = `
       mutation update($id: ID!, $_partitionKeyValue: String!, $item: UpdateproductsInput!) {
@@ -198,6 +125,8 @@ export async function createDocument(data) {
 
     const timeNow = new Date();
     data.created = timeNow;
+    const currentUser = await getUserInfo();
+    data.created_by = currentUser.userDetails;
     
     const gql = `
       mutation create($item: CreateproductsInput!) {
@@ -244,6 +173,8 @@ export async function createDocument(data) {
   //   const data = oldData;
   //   const timeNow = new Date();
   //   data.updated = timeNow;
+  //   const currentUser = await getUserInfo();
+  //   data.updated_by = currentUser.userDetails; 
   //   data.deleted = true;
 
   //   const gql = `

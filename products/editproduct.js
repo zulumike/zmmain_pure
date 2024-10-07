@@ -5,7 +5,22 @@ documentForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     const documentFormData = new FormData(documentForm);
     const documentData = Object.fromEntries(documentFormData);
-    await updateDocument(customerId, documentData);
+    documentData.price = parseFloat(documentData.price);
+    documentData.storage = parseFloat(documentData.storage);
+    documentData.account = parseInt(documentData.account);
+    if (documentData.active === 'on') {
+        documentData.active = true
+    } 
+    else {
+        documentData.active = false;
+    }
+    if (documentData.webshop === 'on') {
+        documentData.webshop = true
+    }
+    else {
+        documentData.webshop = false;
+    }
+    await updateDocument(documentId, documentData);
     window.location.replace('/products/productlist.html');
 })
 
@@ -23,10 +38,12 @@ async function populatedocumentForm(customerId) {
     const createdText = document.getElementById('created-text');
     const updatedText = document.getElementById('updated-text');
     const createdTime = new Date(documentData.created);
-    createdText.textContent = 'Opprettet: ' + createdTime.toLocaleString();
+    createdText.textContent = 'Opprettet: ' + createdTime.toLocaleString() +
+        ' av ' + documentData.created_by;
     if (documentData.updated != null) {
         const updatedTime = new Date(documentData.updated);
-        updatedText.textContent = 'Sist oppdatert: ' + updatedTime.toLocaleString();
+        updatedText.textContent = 'Sist oppdatert: ' + updatedTime.toLocaleString() +
+            ' av ' + documentData.updated_by;
     }
     else {
         updatedText.remove();

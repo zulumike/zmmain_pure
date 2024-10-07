@@ -6,14 +6,14 @@ async function getDocumentList() {
     for (let i = 0; i < documentList.length; i++) {
         if (!documentList[i].deleted) {
             const newRow = table.insertRow(-1);
-            const productNr = newRow.insertCell(0);
-            const productName = newRow.insertCell(1);
-            const productPrice = newRow.insertCell(2);
-            productNr.innerText = documentList[i].id;
-            productName.innerText = documentList[i].name;
-            productPrice.innerText = documentList[i].price;
+            const orderNr = newRow.insertCell(0);
+            const orderName = newRow.insertCell(1);
+            const orderSum = newRow.insertCell(2);
+            orderNr.innerText = documentList[i].id;
+            orderName.innerText = documentList[i].name;
+            orderSum.innerText = documentList[i].sum;
             newRow.addEventListener('click', () => {
-                window.location.href = 'editproduct.html?id=' + documentList[i].id;
+                window.location.href = 'editorder.html?id=' + documentList[i].id;
             })
         }
     }

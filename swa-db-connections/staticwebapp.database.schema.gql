@@ -60,3 +60,29 @@ type products @model {
   updated: String
   updated_by: String
 }
+
+type orders @model {
+  id: ID
+  name: String
+  customer: Int
+  date: String
+  active: Boolean
+  invoices: [Int]
+  created: String
+  created_by: String
+  updated: String
+  updated_by: String
+  deleted: Boolean
+}
+
+type orderLines @model {
+  id: ID
+  order: Int
+  date: String
+  product: String
+  amount: Float
+  unit: String
+  sum: Float
+  comment: String
+  user: String
+}

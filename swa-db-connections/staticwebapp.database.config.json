@@ -66,6 +66,24 @@
           "role": "anonymous"
         }
       ]
+    },
+    "orders": {
+      "source": "orders",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
+    },
+    "orderLines": {
+      "source": "orderLines",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
     }
   }
 }

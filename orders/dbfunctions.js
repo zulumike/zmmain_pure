@@ -80,14 +80,14 @@ export async function getCompany(id) {
 export async function readAllDocuments() {
     const query = `
         {
-            customers {
+            orders {
                 items {
                     id
                     name
-                    address
-                    city
-                    phone
-                    email
+                    customer
+                    date
+                    active
+                    invoices
                     created
                     created_by
                     updated
@@ -103,21 +103,20 @@ export async function readAllDocuments() {
         body: JSON.stringify({ query: query })
     });
     const result = await response.json();
-    return result.data.customers.items;
+    return result.data.orders.items;
 }
 
 export async function getDocument(id) {
 
     const gql = `
       query getById($id: ID!) {
-        customers_by_pk(id: $id) {
+        orders_by_pk(id: $id) {
             id
             name
-            address
-            zip
-            city
-            phone
-            email
+            customer
+            date
+            active
+            invoices
             created
             created_by
             updated
@@ -140,7 +139,7 @@ export async function getDocument(id) {
       body: JSON.stringify(query),
     });
     const result = await response.json();
-    return result.data.customers_by_pk;
+    return result.data.orders_by_pk;
   }
 
 export async function updateDocument(id, data) {
@@ -154,14 +153,14 @@ export async function updateDocument(id, data) {
     data.updated_by = currentUser.userDetails;
 
     const gql = `
-      mutation update($id: ID!, $_partitionKeyValue: String!, $item: UpdatecustomersInput!) {
-        updatecustomers(id: $id, _partitionKeyValue: $_partitionKeyValue, item: $item) {
+      mutation update($id: ID!, $_partitionKeyValue: String!, $item: UpdateordersInput!) {
+        updateorders(id: $id, _partitionKeyValue: $_partitionKeyValue, item: $item) {
             id
             name
-            address
-            city
-            phone
-            email
+            customer
+            date
+            active
+            invoices
             created
             created_by
             updated
@@ -187,14 +186,14 @@ export async function updateDocument(id, data) {
     });
   
     const result = await res.json();
-    return result.data.updatecustomers;
+    return result.data.updateorders;
   }
 
 export async function createDocument(data) {
 
     const company = await getCompany('1');
-    company.nrSeries.customer++
-    data.id = company.nrSeries.customer.toString();
+    company.nrSeries.order++
+    data.id = company.nrSeries.order.toString();
     const timeNow = new Date();
     data.created = timeNow;
     const currentUser = await getUserInfo();
@@ -202,14 +201,14 @@ export async function createDocument(data) {
     data.deleted = false;
 
     const gql = `
-      mutation create($item: CreatecustomersInput!) {
-        createcustomers(item: $item) {
+      mutation create($item: CreateordersInput!) {
+        createorders(item: $item) {
             id
             name
-            address
-            city
-            phone
-            email
+            customer
+            date
+            active
+            invoices
             created
             created_by
             updated
@@ -236,7 +235,7 @@ export async function createDocument(data) {
     
     await updateCompany('1', company)
 
-    return response.data.createcustomers;
+    return response.data.createorders;
   }
 
 //   Soft delete:
@@ -250,14 +249,14 @@ export async function createDocument(data) {
     data.deleted = true;
 
     const gql = `
-      mutation update($id: ID!, $_partitionKeyValue: String!, $item: UpdatecustomersInput!) {
-        updatecustomers(id: $id, _partitionKeyValue: $_partitionKeyValue, item: $item) {
+      mutation update($id: ID!, $_partitionKeyValue: String!, $item: UpdateordersInput!) {
+        updateorders(id: $id, _partitionKeyValue: $_partitionKeyValue, item: $item) {
             id
             name
-            address
-            city
-            phone
-            email
+            customer
+            date
+            active
+            invoices
             created
             created_by
             updated
@@ -283,34 +282,5 @@ export async function createDocument(data) {
     });
   
     const result = await res.json();
-    return result.data.updatecustomers;
+    return result.data.updateorders;
   }
-
-//   Hard delete:
-//   export async function deleteDocument(id) {
-
-//     const gql = `
-//       mutation del($id: ID!, $_partitionKeyValue: String!) {
-//         deletecustomers(id: $id, _partitionKeyValue: $_partitionKeyValue) {
-//           id
-//         }
-//       }`;
-  
-//     const query = {
-//       query: gql,
-//       variables: {
-//         id: id,
-//       _partitionKeyValue: id
-//       }
-//     };
-  
-//     const endpoint = "/data-api/graphql";
-//     const response = await fetch(endpoint, {
-//       method: "POST",
-//       headers: { "Content-Type": "application/json" },
-//       body: JSON.stringify(query)
-//     });
-  
-//     const result = await response.json();
-//     console.log(`Record deleted: ${ JSON.stringify(result.data) }`);
-//   }
