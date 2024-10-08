@@ -11,4 +11,8 @@ documentForm.addEventListener('submit', async (event) => {
     await createDocument(documentData);
     loaderOff();
     window.location.replace('/order/orderlist.html');
-})
+});
+
+const dateInput = document.getElementById('date');
+const today = new Date();
+dateInput.valueAsDate = today;
