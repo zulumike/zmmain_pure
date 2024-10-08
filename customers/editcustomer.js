@@ -1,15 +1,19 @@
 import { updateDocument, getDocument, deleteDocument } from "./dbfunctions.js";
+import { loaderOn, loaderOff } from "../scripts/functions.js";
 
 const documentForm = document.getElementById("documentform");
 documentForm.addEventListener('submit', async (event) => {
     event.preventDefault();
+    loaderOn();
     const documentFormData = new FormData(documentForm);
     const documentData = Object.fromEntries(documentFormData);
     await updateDocument(documentId, documentData);
+    loaderOff();
     window.location.replace('/customers/customerlist.html');
 })
 
 async function populatedocumentForm(customerId) {
+    loaderOn();
     const documentData = await getDocument(customerId)
     document.getElementById('formheading').textContent = 'Kundenr: ' + documentData.id;
     document.getElementById('name').value = documentData.name;
@@ -31,11 +35,14 @@ async function populatedocumentForm(customerId) {
     else {
         updatedText.remove();
     }
+    loaderOff();
 }
 
 async function deleteDocumentById() {
     if (confirm('Er du sikker på at du vil slette kunden?')) {
+        loaderOn();
         await deleteDocument(documentId);
+        loaderOff();
         window.location.replace('/customers/customerlist.html');
     }
 }
