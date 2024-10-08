@@ -287,3 +287,32 @@ export async function createDocument(data) {
     const result = await res.json();
     return result.data.updateorders;
   }
+
+  export async function readAllCustomers() {
+    const query = `
+        {
+            customers {
+                items {
+                    id
+                    name
+                    address
+                    city
+                    phone
+                    email
+                    created
+                    created_by
+                    updated
+                    updated_by
+                    deleted
+                }
+            }
+        }`;
+    const endpoint = '/data-api/graphql';
+    const response = await fetch(endpoint, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: query })
+    });
+    const result = await response.json();
+    return result.data.customers.items;
+}

@@ -55,6 +55,16 @@ input[type="checkbox"]:hover {
     cursor: pointer;
 }
 
+select {
+    border-radius: var(--stdborderradius);
+    font-size: var(--stdfontsize);
+    padding: 5px;
+    display: block;
+    width: 100%;
+    margin: 5px;
+    outline: none;
+}
+
 textarea {
     border-radius: var(--stdborderradius);
     font-size: var(--stdfontsize);
