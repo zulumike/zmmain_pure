@@ -61,21 +61,7 @@ type products @model {
   updated_by: String
 }
 
-type orders @model {
-  id: ID
-  name: String
-  customer: Int
-  date: String
-  active: Boolean
-  invoices: [Int]
-  created: String
-  created_by: String
-  updated: String
-  updated_by: String
-  deleted: Boolean
-}
-
-type orderLines @model {
+type orderLines {
   id: ID
   order: Int
   date: String
@@ -85,4 +71,19 @@ type orderLines @model {
   sum: Float
   comment: String
   user: String
+}
+
+type orders @model {
+  id: ID
+  name: String
+  customer: Int
+  date: String
+  active: Boolean
+  invoices: [Int]
+  orderLines: [orderLines]
+  created: String
+  created_by: String
+  updated: String
+  updated_by: String
+  deleted: Boolean
 }

@@ -117,6 +117,7 @@ export async function getDocument(id) {
             date
             active
             invoices
+            orderLines
             created
             created_by
             updated
@@ -161,6 +162,7 @@ export async function updateDocument(id, data) {
             date
             active
             invoices
+            orderLines
             created
             created_by
             updated
@@ -257,6 +259,7 @@ export async function createDocument(data) {
             date
             active
             invoices
+            orderLines
             created
             created_by
             updated
