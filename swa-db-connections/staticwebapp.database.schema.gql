@@ -63,12 +63,11 @@ type products @model {
 
 type orderLines {
   id: ID
-  order: Int
   date: String
   product: String
+  price: Float
   amount: Float
   unit: String
-  sum: Float
   comment: String
   user: String
 }

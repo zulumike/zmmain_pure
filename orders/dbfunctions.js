@@ -117,7 +117,16 @@ export async function getDocument(id) {
             date
             active
             invoices
-            orderLines
+            orderLines {
+              id
+              date
+              product
+              price
+              amount
+              unit
+              comment
+              user
+            }
             created
             created_by
             updated
@@ -162,7 +171,16 @@ export async function updateDocument(id, data) {
             date
             active
             invoices
-            orderLines
+            orderLines {
+              id
+              date
+              product
+              price
+              amount
+              unit
+              comment
+              user
+            }
             created
             created_by
             updated
@@ -201,6 +219,7 @@ export async function createDocument(data) {
     const currentUser = await getUserInfo();
     data.created_by = currentUser.userDetails;
     data.deleted = false;
+    data.orderLines = [];
 
     const gql = `
       mutation create($item: CreateordersInput!) {
@@ -211,6 +230,16 @@ export async function createDocument(data) {
             date
             active
             invoices
+            orderLines {
+              id
+              date
+              product
+              price
+              amount
+              unit
+              comment
+              user
+            }
             created
             created_by
             updated
@@ -259,7 +288,16 @@ export async function createDocument(data) {
             date
             active
             invoices
-            orderLines
+            orderLines {
+              id
+              date
+              product
+              price
+              amount
+              unit
+              comment
+              user
+            }
             created
             created_by
             updated
@@ -315,4 +353,36 @@ export async function createDocument(data) {
     });
     const result = await response.json();
     return result.data.customers.items;
+}
+
+export async function readAllProducts() {
+  const query = `
+      {
+          products {
+              items {
+                id
+                name
+                description
+                unit
+                price
+                storage
+                account
+                active
+                webshop
+                image
+                created
+                created_by
+                updated
+                updated_by
+              }
+          }
+      }`;
+  const endpoint = '/data-api/graphql';
+  const response = await fetch(endpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query: query })
+  });
+  const result = await response.json();
+  return result.data.products.items;
 }
