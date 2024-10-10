@@ -19,7 +19,7 @@ form {
     max-width: 400px;
 }
 
-form input[type="submit"], input[type="button"] {
+form input[type="submit"], input[type="button"], input[type="reset"] {
     display: inline;
     margin-top: 10px;
     background-color: var(--stdhovercolor);
@@ -31,7 +31,7 @@ label {
     margin: 5px;
 }
 
-input[type="submit"], input[type="button"]:hover {
+input[type="submit"], input[type="button"], input[type="reset"]:hover {
     cursor: pointer;
 }
 
