@@ -22,6 +22,7 @@ nav {
     align-items: center;
     padding: 20px;
     background-color: var(--navbarcolor);
+    margin-bottom: 10px;
 }
 
 .nav-links {
