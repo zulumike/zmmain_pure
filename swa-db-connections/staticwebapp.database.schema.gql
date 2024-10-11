@@ -78,6 +78,7 @@ type orders @model {
   customer: Int
   date: String
   active: Boolean
+  sum: Float
   invoices: [Int]
   orderLines: [orderLines]
   created: String

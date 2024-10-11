@@ -87,6 +87,7 @@ export async function readAllDocuments() {
                     customer
                     date
                     active
+                    sum
                     invoices
                     created
                     created_by
@@ -116,6 +117,7 @@ export async function getDocument(id) {
             customer
             date
             active
+            sum
             invoices
             orderLines {
               id
@@ -170,6 +172,7 @@ export async function updateDocument(id, data) {
             customer
             date
             active
+            sum
             invoices
             orderLines {
               id
@@ -220,6 +223,7 @@ export async function createDocument(data) {
     data.created_by = currentUser.userDetails;
     data.deleted = false;
     data.orderLines = [];
+    data.sum = 0;
 
     const gql = `
       mutation create($item: CreateordersInput!) {
@@ -229,6 +233,7 @@ export async function createDocument(data) {
             customer
             date
             active
+            sum
             invoices
             orderLines {
               id
@@ -287,6 +292,7 @@ export async function createDocument(data) {
             customer
             date
             active
+            sum
             invoices
             orderLines {
               id

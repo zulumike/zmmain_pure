@@ -20,7 +20,7 @@ async function getDocumentList() {
                 }
             }
             orderName.innerText = documentList[i].name;
-            orderSum.innerText = documentList[i].sum;
+            orderSum.innerText = documentList[i].sum.toLocaleString("nb-NO", {minimumFractionDigits: 2});
             newRow.addEventListener('click', () => {
                 window.location.href = 'editorder.html?id=' + documentList[i].id;
             })

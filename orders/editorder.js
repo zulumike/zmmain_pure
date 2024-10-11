@@ -12,12 +12,23 @@ documentForm.addEventListener('submit', async (event) => {
     const documentData = Object.fromEntries(documentFormData);
     documentData.customer = parseInt(documentData.customer);
     documentData.orderLines = orderData.orderLines;
+    documentData.sum = calculateOrder();
     await updateDocument(documentId, documentData);
     loaderOff();
     window.location.replace('/orders/orderlist.html');
 })
 
-function presentOrderLines(orderLines) {
+function calculateOrder() {
+    let orderSum = 0;
+    if (orderData.orderLines.length > 0) {
+        for (let i = 0; i < orderData.orderLines.length; i++) {
+            orderSum = orderSum + orderData.orderLines[i].price * orderData.orderLines[i].amount;   
+        }
+    }
+    return orderSum;
+}
+
+function presentOrderLines() {
     const existingTable = document.getElementById('orderlinetable');
     if (existingTable != null) {
         existingTable.remove();
@@ -35,35 +46,43 @@ function presentOrderLines(orderLines) {
     const hCell1 = headingRow.insertCell(0);
     hCell1.innerText = 'Dato:';
     const hCell2 = headingRow.insertCell(1);
-    hCell2.innerText = 'Produkt:';
+    hCell2.innerText = 'Produktnr:';
     const hCell3 = headingRow.insertCell(2);
-    hCell3.innerText = 'Pris:';
+    hCell3.innerText = 'Produkt-tekst:';
     const hCell4 = headingRow.insertCell(3);
-    hCell4.innerText = 'Antall:';
+    hCell4.innerText = 'Pris:';
     const hCell5 = headingRow.insertCell(4);
-    hCell5.innerText = 'Enhet:';
+    hCell5.innerText = 'Antall:';
     const hCell6 = headingRow.insertCell(5);
-    hCell6.innerText = 'Beløp:';
+    hCell6.innerText = 'Enhet:';
     const hCell7 = headingRow.insertCell(6);
-    hCell7.innerText = 'Kommentar:';
-    for (let i = 0; i < orderLines.length; i++) {
+    hCell7.innerText = 'Beløp:';
+    const hCell8 = headingRow.insertCell(7);
+    hCell8.innerText = 'Kommentar:';
+    for (let i = 0; i < orderData.orderLines.length; i++) {
         const bodyRow = tableBody.insertRow(-1);
         const date = bodyRow.insertCell(0);
         const product = bodyRow.insertCell(1);
-        const price = bodyRow.insertCell(2);
-        const amount = bodyRow.insertCell(3);
-        const unit = bodyRow.insertCell(4);
-        const sum = bodyRow.insertCell(5);
-        const comment = bodyRow.insertCell(6);
-        date.innerText = orderLines[i].date;
-        product.innerText = orderLines[i].product;
-        price.innerText = orderLines[i].price;
-        amount.innerText = orderLines[i].amount;
-        unit.innerText = orderLines[i].unit;
-        sum.innerText = orderLines[i].price * orderLines[i].amount;
-        comment.innerText = orderLines[i].comment;
+        const productName = bodyRow.insertCell(2);
+        const price = bodyRow.insertCell(3);
+        const amount = bodyRow.insertCell(4);
+        const unit = bodyRow.insertCell(5);
+        const sum = bodyRow.insertCell(6);
+        const comment = bodyRow.insertCell(7);
+        const olDate = new Date(orderData.orderLines[i].date);
+        date.innerText = olDate.toLocaleDateString();
+        product.innerText = orderData.orderLines[i].product;
+        const selectedProduct = productList.find((element) => element.id == orderData.orderLines[i].product);
+        productName.innerText = selectedProduct.name;
+        price.innerText = orderData.orderLines[i].price.toLocaleString("nb-NO", {minimumFractionDigits: 2});
+        amount.innerText = orderData.orderLines[i].amount.toLocaleString("nb-NO", {minimumFractionDigits: 2});
+        unit.innerText = orderData.orderLines[i].unit;
+        sum.innerText = (orderData.orderLines[i].price * orderData.orderLines[i].amount).toLocaleString("nb-NO", {minimumFractionDigits: 2});
+        comment.innerText = orderData.orderLines[i].comment;
         bodyRow.addEventListener('click', () => {
-            populateOrderLineForm(orderLines[i]);
+            populateOrderLineForm(orderData.orderLines[i]);
+            orderData.orderLines.splice(i, 1);
+            presentOrderLines();
         });
     }
 }
@@ -75,13 +94,11 @@ function addOrderLine(event, orderLineForm) {
     orderLineData.amount = parseFloat(orderLineData.amount);
     orderData.orderLines.push(orderLineData);
     presentOrderLines(orderData.orderLines);
-    console.table(orderLineData);
 }
 
 async function orderLineForm() {
     productList = await readAllProducts();
     const orderLineForm = document.getElementById('orderlineform');
-
     const dateDiv = document.createElement('div');
     const dateLabel = document.createElement('label');
     dateLabel.for = 'date';
@@ -125,6 +142,7 @@ async function orderLineForm() {
     emptyOLAmount.type = 'number';
     emptyOLAmount.id = 'olamount';
     emptyOLAmount.name = 'amount';
+    emptyOLAmount.value = 1;
     amountDiv.appendChild(amountLabel);
     amountDiv.appendChild(emptyOLAmount);
 
@@ -161,6 +179,13 @@ async function orderLineForm() {
     commentDiv.appendChild(divLabel);
     commentDiv.appendChild(emptyOLComment);
 
+    // prefill inputs based on selected product
+    emptyOLProductId.addEventListener('change', (event) => {
+        const selectedProduct = productList.find((element) => element.id == event.target.value);
+        emptyOLPrice.value = selectedProduct.price;
+        emptyOLUnit.value = selectedProduct.unit;
+    })
+
     const submitOrderLine = document.createElement('input');
     submitOrderLine.type = 'submit';
     submitOrderLine.value = 'Legg til';
@@ -168,6 +193,7 @@ async function orderLineForm() {
     orderLineForm.addEventListener('submit', (event) => {
         addOrderLine(event, orderLineForm);
         orderLineForm.reset();
+        emptyOLDate.valueAsDate = today;
     })
 
     const resetOrderLineForm = document.createElement('input');
@@ -190,7 +216,6 @@ function populateOrderLineForm(orderLineData) {
     document.getElementById('olamount').value = orderLineData.amount;
     document.getElementById('olunit').value = orderLineData.unit;
     document.getElementById('olcomment').value = orderLineData.comment;
-    console.log(typeof(document.getElementById('olproductid').value));
 }
 
 async function populatedocumentForm(documentId) {
@@ -226,9 +251,9 @@ async function populatedocumentForm(documentId) {
     else {
         updatedText.remove();
     }
-    orderLineForm();
+    await orderLineForm();
     if (orderData.orderLines.length > 0) {
-        presentOrderLines(orderData.orderLines);
+        presentOrderLines();
     }
   
     loaderOff();
