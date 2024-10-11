@@ -14,7 +14,7 @@ body {
 form {
     border-radius: var(--stdborderradius);
     background-color: var(--navbarcolor);
-    padding: 20px;
+    /* padding: 20px; */
     font-size: var(--stdfontsize);
     max-width: 400px;
 }
@@ -35,7 +35,7 @@ input[type="submit"], input[type="button"], input[type="reset"]:hover {
     cursor: pointer;
 }
 
-input {
+input, select {
     border-radius: var(--stdborderradius);
     font-size: var(--stdfontsize);
     padding: 5px;
@@ -59,16 +59,6 @@ input[type="checkbox"]:hover {
     cursor: pointer;
 }
 
-select {
-    border-radius: var(--stdborderradius);
-    font-size: var(--stdfontsize);
-    padding: 5px;
-    display: block;
-    width: 100%;
-    margin: 5px;
-    outline: none;
-}
-
 textarea {
     border-radius: var(--stdborderradius);
     font-size: var(--stdfontsize);
@@ -87,8 +77,32 @@ p {
     font-size: var(--smallfontsize);
 }
 
-.main-div {
+/* .main-div {
     margin: 10px;
+} */
+
+.orderinfodiv {
+    display: flex;
+    margin: 10px;
+    border-radius: var(--stdborderradius);
+    background-color: var(--navbarcolor);
+    padding: 20px;
+    font-size: var(--stdfontsize);
+    max-width: 1200px;
+    align-content: space-between;
+}
+
+.orderinfosubdiv {
+    margin: 10px;
+}
+
+.orderlineformdiv {
+    margin: 10px;
+    border-radius: var(--stdborderradius);
+    background-color: var(--navbarcolor);
+    padding: 20px;
+    font-size: var(--stdfontsize);
+    max-width: 1200px;
 }
 
 .list-table {
@@ -113,6 +127,10 @@ p {
     box-shadow: 0 0 0 2px var(--navbarcolor)
 }
 
+.orderlinediv {
+    margin-top: 10px;
+}
+
 #orderlineform {
     margin-top: 10px;
     max-width: 100%;
@@ -130,7 +148,7 @@ p {
 }
 
 #orderlineform input {
-    display: block;
+    /* display: block; */
     width: auto;
     font-size: var(--smallfontsize);
 }

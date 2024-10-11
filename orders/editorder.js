@@ -85,6 +85,8 @@ function presentOrderLines() {
             presentOrderLines();
         });
     }
+    const orderSumText = document.getElementById('ordersumtext');
+    orderSumText.innerText = 'Ordresum: ' + calculateOrder();
 }
 function addOrderLine(event, orderLineForm) {
     event.preventDefault();
