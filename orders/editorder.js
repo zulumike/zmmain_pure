@@ -2,6 +2,7 @@ import { updateDocument, getDocument, deleteDocument, readAllCustomers, readAllP
 import { loaderOn, loaderOff } from "../scripts/functions.js";
 
 let orderData = {};
+let productList = [];
 
 const documentForm = document.getElementById("documentform");
 documentForm.addEventListener('submit', async (event) => {
@@ -78,7 +79,7 @@ function addOrderLine(event, orderLineForm) {
 }
 
 async function orderLineForm() {
-    const productList = await readAllProducts();
+    productList = await readAllProducts();
     const orderLineForm = document.getElementById('orderlineform');
 
     const dateDiv = document.createElement('div');
@@ -109,6 +110,7 @@ async function orderLineForm() {
             const productOption = document.createElement('option');
             productOption.textContent = productList[i].id.toString() + '-' + productList[i].name;
             productOption.value = productList[i].id;
+            productOption.id = productList[i].id;
             emptyOLProductId.appendChild(productOption);
         }
     }
@@ -183,7 +185,7 @@ async function orderLineForm() {
 
 function populateOrderLineForm(orderLineData) {
     document.getElementById('oldate').value = orderLineData.date;
-    document.getElementById('olproductid').value = orderLineData.product;
+    document.getElementById(orderLineData.product).selected = true;
     document.getElementById('olprice').value = orderLineData.price;
     document.getElementById('olamount').value = orderLineData.amount;
     document.getElementById('olunit').value = orderLineData.unit;
