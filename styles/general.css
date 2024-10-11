@@ -81,7 +81,7 @@ p {
     margin: 10px;
 } */
 
-.orderinfodiv {
+.orderinfodiv, .customerinfodiv, .productinfodiv {
     display: flex;
     margin: 10px;
     border-radius: var(--stdborderradius);

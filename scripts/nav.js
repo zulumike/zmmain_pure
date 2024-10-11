@@ -18,6 +18,17 @@ navTemplate.innerHTML = `
 const navBar = document.getElementById('navbar');
 navBar.appendChild(navTemplate.content);
 
+const currentUrl = window.location.href;
+if (currentUrl.search("customers") > 0) document.getElementById('navcustomers').classList = ['nav-link-active']
+else if (currentUrl.search("products") > 0) document.getElementById('navproducts').classList = ['nav-link-active']
+else if (currentUrl.search("orders") > 0) document.getElementById('navorders').classList = ['nav-link-active']
+else if (currentUrl.search("invoices") > 0) document.getElementById('navinvoices').classList = ['nav-link-active']
+else if (currentUrl.search("costs") > 0) document.getElementById('navcosts').classList = ['nav-link-active']
+else if (currentUrl.search("admin") > 0) document.getElementById('navcosts').classList = ['nav-link-active']
+else document.getElementById('navhome').classList = ['nav-link-active'];
+
+console.log(currentUrl);
+
 const burger = document.querySelector('.burger');
 const navLinks = document.querySelector('.nav-links');
 const body = document.querySelector('body');
