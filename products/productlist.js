@@ -1,9 +1,9 @@
-import { readAllDocuments } from "./dbfunctions.js";
+import { readAllProducts } from "../scripts/dbfunctions.js";
 import { loaderOn, loaderOff } from "../scripts/functions.js";
 
 async function getDocumentList() {
     loaderOn();
-    const documentList = await readAllDocuments();
+    const documentList = await readAllProducts();
     const table = document.getElementById("table-body");
     for (let i = 0; i < documentList.length; i++) {
         if (!documentList[i].deleted) {

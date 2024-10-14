@@ -1,4 +1,4 @@
-import { createDocument } from "./dbfunctions.js";
+import { createProduct } from "../scripts/dbfunctions.js";
 import { loaderOn, loaderOff } from "../scripts/functions.js";
 
 const documentForm = document.getElementById("documentform");
@@ -23,7 +23,7 @@ documentForm.addEventListener('submit', async (event) => {
         documentData.webshop = false;
     };
     console.log(documentData.webshop);
-    await createDocument(documentData);
+    await createProduct(documentData);
     loaderOff();
     window.location.replace('/products/productlist.html');
 })

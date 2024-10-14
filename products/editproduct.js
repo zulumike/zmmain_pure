@@ -1,4 +1,4 @@
-import { updateDocument, getDocument, deleteDocument } from "./dbfunctions.js";
+import { updateProduct, getProduct, deleteProduct } from "../scripts/dbfunctions.js";
 import { loaderOn, loaderOff } from "../scripts/functions.js";
 
 const documentForm = document.getElementById("documentform");
@@ -22,14 +22,14 @@ documentForm.addEventListener('submit', async (event) => {
     else {
         documentData.webshop = false;
     }
-    await updateDocument(documentId, documentData);
+    await updateProduct(documentId, documentData);
     loaderOff();
     window.location.replace('/products/productlist.html');
 })
 
 async function populatedocumentForm(customerId) {
     loaderOn();
-    const documentData = await getDocument(customerId)
+    const documentData = await getProduct(customerId)
     document.getElementById('id').value = documentData.id;
     document.getElementById('name').value = documentData.name;
     document.getElementById('description').value = documentData.description;
@@ -58,7 +58,7 @@ async function populatedocumentForm(customerId) {
 async function deleteDocumentById() {
     if (confirm('Er du sikker på at du vil slette produktet?')) {
         loaderOn();
-        await deleteDocument(documentId);
+        await deleteProduct(documentId);
         loaderOff();
         window.location.replace('/products/productlist.html');
     }

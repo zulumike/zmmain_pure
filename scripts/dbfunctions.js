@@ -1,6 +1,6 @@
 import { getUserInfo } from "../scripts/auth.js";
 
-export async function readAllDocuments() {
+export async function readAllProducts() {
     const query = `
         {
             products {
@@ -32,7 +32,7 @@ export async function readAllDocuments() {
     return result.data.products.items;
 }
 
-export async function getDocument(id) {
+export async function getProduct(id) {
 
     const gql = `
       query getById($id: ID!) {
@@ -71,8 +71,8 @@ export async function getDocument(id) {
     return result.data.products_by_pk;
   }
 
-export async function updateDocument(id, data) {
-    const oldData = await getDocument(id);
+export async function updateProduct(id, data) {
+    const oldData = await getProduct(id);
     data.created = oldData.created;
     data.created_by = oldData.created_by;
     data.id = id;
@@ -121,7 +121,7 @@ export async function updateDocument(id, data) {
     return result.data.updateproducts;
   }
 
-export async function createDocument(data) {
+export async function createProduct(data) {
 
     const timeNow = new Date();
     data.created = timeNow;
@@ -167,58 +167,8 @@ export async function createDocument(data) {
     return response.data.createproducts;
   }
 
-//   Soft delete:
-  // export async function deleteDocument(id) {
-  //   const oldData = await getDocument(id);
-  //   const data = oldData;
-  //   const timeNow = new Date();
-  //   data.updated = timeNow;
-  //   const currentUser = await getUserInfo();
-  //   data.updated_by = currentUser.userDetails; 
-  //   data.deleted = true;
-
-  //   const gql = `
-  //     mutation update($id: ID!, $_partitionKeyValue: String!, $item: UpdateproductsInput!) {
-  //       updateproducts(id: $id, _partitionKeyValue: $_partitionKeyValue, item: $item) {
-  //         id
-  //         name
-  //         description
-  //         unit
-  //         price
-  //         storage
-  //         account
-  //         active
-  //         webshop
-  //         image
-  //         created
-  //         created_by
-  //         updated
-  //         updated_by
-  //       }
-  //     }`;
-  
-  //   const query = {
-  //     query: gql,
-  //     variables: {
-  //       id: id,
-  //       _partitionKeyValue: id,
-  //       item: data
-  //     } 
-  //   };
-  
-  //   const endpoint = "/data-api/graphql";
-  //   const res = await fetch(endpoint, {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify(query)
-  //   });
-  
-  //   const result = await res.json();
-  //   return result.data.updateproducts;
-  // }
-
 //   Hard delete:
-  export async function deleteDocument(id) {
+  export async function deleteProduct(id) {
 
     const gql = `
       mutation del($id: ID!, $_partitionKeyValue: String!) {
