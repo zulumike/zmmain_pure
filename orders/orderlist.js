@@ -1,9 +1,9 @@
-import { readAllDocuments, readAllCustomers } from "./dbfunctions.js";
+import { readAllOrders, readAllCustomers } from "../scripts/dbfunctions.js";
 import { loaderOn, loaderOff } from "../scripts/functions.js";
 
 async function getDocumentList() {
     loaderOn();
-    const documentList = await readAllDocuments();
+    const documentList = await readAllOrders();
     const customerList = await readAllCustomers();
     const table = document.getElementById("table-body");
     for (let i = 0; i < documentList.length; i++) {

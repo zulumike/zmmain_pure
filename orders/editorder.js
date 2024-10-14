@@ -1,4 +1,4 @@
-import { updateDocument, getDocument, deleteDocument, readAllCustomers, readAllProducts } from "./dbfunctions.js";
+import { updateOrder, getOrder, deleteOrder, readAllCustomers, readAllProducts } from "../scripts/dbfunctions.js";
 import { loaderOn, loaderOff } from "../scripts/functions.js";
 
 let orderData = {};
@@ -13,7 +13,7 @@ documentForm.addEventListener('submit', async (event) => {
     documentData.customer = parseInt(documentData.customer);
     documentData.orderLines = orderData.orderLines;
     documentData.sum = calculateOrder();
-    await updateDocument(documentId, documentData);
+    await updateOrder(documentId, documentData);
     loaderOff();
     window.location.replace('/orders/orderlist.html');
 })
@@ -222,7 +222,7 @@ function populateOrderLineForm(orderLineData) {
 
 async function populatedocumentForm(documentId) {
     loaderOn();
-    orderData = await getDocument(documentId)
+    orderData = await getOrder(documentId)
     document.getElementById('formheading').textContent = 'Ordrenr: ' + orderData.id;
     document.getElementById('customer').value = orderData.customer;
     const customerList = await readAllCustomers();
@@ -262,11 +262,11 @@ async function populatedocumentForm(documentId) {
 }
 
 async function deleteDocumentById() {
-    if (confirm('Er du sikker på at du vil slette kunden?')) {
+    if (confirm('Er du sikker på at du vil slette ordren?')) {
         loaderOn();
-        await deleteDocument(documentId);
+        await deleteOrder(documentId);
         loaderOff();
-        window.location.replace('/customers/customerlist.html');
+        window.location.replace('/orders/orderlist.html');
     }
 }
 

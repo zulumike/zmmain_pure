@@ -1,4 +1,4 @@
-import { createDocument, readAllCustomers } from "./dbfunctions.js";
+import { createOrder, readAllCustomers } from "../scripts/dbfunctions.js";
 import { loaderOn, loaderOff } from "../scripts/functions.js";
 
 async function createCustomerDropdown() {
@@ -27,7 +27,7 @@ documentForm.addEventListener('submit', async (event) => {
     const documentData = Object.fromEntries(documentFormData);
     documentData.active = true;
     documentData.customer = parseInt(documentData.customer);
-    await createDocument(documentData);
+    await createOrder(documentData);
     loaderOff();
     window.location.replace('/orders/orderlist.html');
 });
