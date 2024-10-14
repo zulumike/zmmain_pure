@@ -58,6 +58,15 @@
         }
       ]
     },
+    "accounts": {
+      "source": "b",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
+    },
     "products": {
       "source": "products",
       "permissions": [
@@ -77,7 +86,25 @@
       ]
     },
     "orderLines": {
-      "source": "b",
+      "source": "c",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
+    },
+    "costs": {
+      "source": "costs",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
+    },
+    "costLines": {
+      "source": "d",
       "permissions": [
         {
           "actions": ["*"],

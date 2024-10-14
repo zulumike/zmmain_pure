@@ -17,6 +17,11 @@ type NrSeries {
   cost: Int
 }
 
+type accounts {
+  nr: Int
+  description: String
+}
+
 type company @model {
   id: ID
   name: String
@@ -27,6 +32,7 @@ type company @model {
   email: String
   bankAccount: String
   nrSeries: NrSeries
+  accounts: [accounts]
 }
 
 type customers @model {
@@ -81,6 +87,27 @@ type orders @model {
   sum: Float
   invoices: [Int]
   orderLines: [orderLines]
+  created: String
+  created_by: String
+  updated: String
+  updated_by: String
+  deleted: Boolean
+}
+
+type costLines {
+  id: ID
+  date: String
+  account: Int
+  price: Float
+  description: String
+}
+
+type costs @model {
+  id: ID
+  date: String
+  description: String
+  costLines: [costLines]
+  sum: Float
   created: String
   created_by: String
   updated: String

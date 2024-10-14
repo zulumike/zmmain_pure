@@ -11,29 +11,25 @@
         <header>
             <nav id="navbar">
                 <div class="burger">
-                    <h1>Ordrer</h1>
+                    <h1>Bilag</h1>
                 </div>
             </nav>
         </header>
         <script src="/scripts/nav.js"></script>
         <main>
             <div class="main-div">
-                <div class="orderinfodiv">
+                <div class="costinfodiv">
                     <form id="documentform">
-                        <label for="customer">Kunde: </label>
-                        <select name="customer" id="customer">
-                            <option>Velg kunde</option>
-                        </select>
-                        <label for="name">Ordrenavn: </label>
-                        <input type="text" id="name" name="name">
-                        <label for="date">Ordredato: </label>
+                        <label for="date">Bilagsdato: </label>
                         <input type="date" id="date" name="date">
+                        <label for="description">Beskrivelse: </label>
+                        <input type="text" id="description" name="description">
                         <input type="submit" value="Lagre">
-                        <input type="button" value="Avbryt" onclick="window.location.replace('/orders/orderlist.html')">
+                        <input type="button" value="Avbryt" onclick="window.location.replace('/costs/costlist.html')">
                     </form>
                 </div>
             </div>
-            <script type="module" src="neworder.js"></script>
+            <script type="module" src="newcost.js"></script>
         </main>
   </body>
 </html>

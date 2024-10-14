@@ -27,8 +27,6 @@ else if (currentUrl.search("costs") > 0) document.getElementById('navcosts').cla
 else if (currentUrl.search("admin") > 0) document.getElementById('navcosts').classList = ['nav-link-active']
 else document.getElementById('navhome').classList = ['nav-link-active'];
 
-console.log(currentUrl);
-
 const burger = document.querySelector('.burger');
 const navLinks = document.querySelector('.nav-links');
 const body = document.querySelector('body');
