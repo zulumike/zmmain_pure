@@ -110,7 +110,6 @@ async function costLineForm() {
     for (let i = 0; i < accountList.length; i++) {
         const accountOption = document.createElement('option');
         accountOption.textContent = accountList[i].nr.toString() + '-' + accountList[i].description;
-        console.log(accountList[i].nr + '-' + accountList[i].description)
         accountOption.value = accountList[i].id;
         accountOption.id = accountList[i].id;
         emptyCLAccountId.appendChild(accountOption);
