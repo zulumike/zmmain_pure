@@ -127,33 +127,33 @@ p {
     box-shadow: 0 0 0 2px var(--navbarcolor)
 }
 
-.orderlinediv {
+.orderlinediv, .costlinediv {
     margin-top: 10px;
 }
 
-#orderlineform {
+#orderlineform, #costlineform {
     margin-top: 10px;
     max-width: 100%;
     font-size: var(--smallfontsize);
 }
 
-#orderlineform div {
+#orderlineform, #costlineform div {
     display: inline-block;
     width: auto;
 }
 
-#orderlineform label {
+#orderlineform, #costlineform label {
     display: block;
     width: auto;
 }
 
-#orderlineform input {
+#orderlineform, #costlineform input {
     /* display: block; */
     width: auto;
     font-size: var(--smallfontsize);
 }
 
-#orderlineform select {
+#orderlineform, #costlineform select {
     display: block;
     width: auto;
     font-size: var(--smallfontsize);

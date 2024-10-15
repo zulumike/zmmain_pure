@@ -15,7 +15,7 @@ async function getDocumentList() {
             costNr.innerText = documentList[i].id;
             costDate.innerText = documentList[i].date;
             costDescription.innerText = documentList[i].description;
-            costSum.innerText = documentList[i].sum;
+            costSum.innerText = documentList[i].sum.toLocaleString("nb-NO", {minimumFractionDigits: 2});
             newRow.addEventListener('click', () => {
                 window.location.href = 'editcost.html?id=' + documentList[i].id;
             })

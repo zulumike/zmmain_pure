@@ -86,7 +86,7 @@ function presentOrderLines() {
         });
     }
     const orderSumText = document.getElementById('ordersumtext');
-    orderSumText.innerText = 'Ordresum: ' + calculateOrder();
+    orderSumText.innerText = 'Ordresum: ' + calculateOrder().toLocaleString("nb-NO", {minimumFractionDigits: 2});
 }
 function addOrderLine(event, orderLineForm) {
     event.preventDefault();

@@ -21,7 +21,7 @@ function calculateCost() {
     let costSum = 0;
     if (costData.costLines.length > 0) {
         for (let i = 0; i < costData.costLines.length; i++) {
-            costSum = costSum + costData.costLines[i].price * costData.costLines[i].amount;   
+            costSum = costSum + costData.costLines[i].price;   
         }
     }
     return costSum;
@@ -32,15 +32,16 @@ function presentcostLines() {
     if (existingTable != null) {
         existingTable.remove();
     }
+    console.log(costData.costLines);
     const costLineDiv = document.getElementById('costlinediv');
-    const olTable = document.createElement('table');
-    olTable.classList = ['list-table'];
-    olTable.id = 'costlinetable';
+    const clTable = document.createElement('table');
+    clTable.classList = ['list-table'];
+    clTable.id = 'costlinetable';
     const tableHeading = document.createElement('thead');
     const tableBody = document.createElement('tbody');
-    olTable.appendChild(tableHeading);    
-    olTable.appendChild(tableBody);    
-    costLineDiv.appendChild(olTable);
+    clTable.appendChild(tableHeading);    
+    clTable.appendChild(tableBody);    
+    costLineDiv.appendChild(clTable);
     const headingRow = tableHeading.insertRow(0);
     const hCell1 = headingRow.insertCell(0);
     hCell1.innerText = 'Dato:';
@@ -54,8 +55,8 @@ function presentcostLines() {
         const bodyRow = tableBody.insertRow(-1);
         const date = bodyRow.insertCell(0);
         const account = bodyRow.insertCell(1);
-        const price = bodyRow.insertCell(3);
-        const description = bodyRow.insertCell(7);
+        const price = bodyRow.insertCell(2);
+        const description = bodyRow.insertCell(3);
         const clDate = new Date(costData.costLines[i].date);
         date.innerText = clDate.toLocaleDateString();
         account.innerText = costData.costLines[i].account;
@@ -68,16 +69,16 @@ function presentcostLines() {
         });
     }
     const costSumText = document.getElementById('costsumtext');
-    costSumText.innerText = 'Ordresum: ' + calculateCost();
+    costSumText.innerText = 'Bilagsum: ' + calculateCost().toLocaleString("nb-NO", {minimumFractionDigits: 2});
 }
 function addCostLine(event, costLineForm) {
     event.preventDefault();
     const costLineFormData = new FormData(costLineForm);
     const costLineData = Object.fromEntries(costLineFormData);
+    costLineData.account = parseInt(costLineData.account);
     costLineData.price = parseFloat(costLineData.price);
-    costLineData.amount = parseFloat(costLineData.amount);
     costData.costLines.push(costLineData);
-    presentcostLines(costData.costLines);
+    presentcostLines();
 }
 
 async function costLineForm() {
@@ -110,8 +111,8 @@ async function costLineForm() {
     for (let i = 0; i < accountList.length; i++) {
         const accountOption = document.createElement('option');
         accountOption.textContent = accountList[i].nr.toString() + '-' + accountList[i].description;
-        accountOption.value = accountList[i].id;
-        accountOption.id = accountList[i].id;
+        accountOption.value = accountList[i].nr;
+        accountOption.id = accountList[i].nr;
         emptyCLAccountId.appendChild(accountOption);
     }
     accountDiv.appendChild(accountIdLabel);
@@ -123,20 +124,20 @@ async function costLineForm() {
     priceLabel.innerText = 'Pris';
     const emptyCLPrice = document.createElement('input');
     emptyCLPrice.type = 'number';
-    emptyCLPrice.id = 'olprice';
+    emptyCLPrice.id = 'clprice';
     emptyCLPrice.name = 'price';
     priceDiv.appendChild(priceLabel);
     priceDiv.appendChild(emptyCLPrice);
 
     const descriptionDiv = document.createElement('div');
-    const divLabel = document.createElement('label');
-    divLabel.for = 'cldescription';
-    divLabel.innerText = 'Kommentar';
+    const descriptionLabel = document.createElement('label');
+    descriptionLabel.for = 'cldescription';
+    descriptionLabel.innerText = 'Beskrivelse';
     const emptyCLDescription = document.createElement('input');
     emptyCLDescription.type = 'text';
     emptyCLDescription.id = 'cldescription';
-    emptyCLDescription.name = 'comment';
-    descriptionDiv.appendChild(divLabel);
+    emptyCLDescription.name = 'description';
+    descriptionDiv.appendChild(descriptionLabel);
     descriptionDiv.appendChild(emptyCLDescription);
 
     const submitCostLine = document.createElement('input');
