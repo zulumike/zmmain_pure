@@ -15,6 +15,26 @@
                 </div>
             </nav>
         </header>
-    <script src="/scripts/nav.js"></script>
+        <script src="/scripts/nav.js"></script>
+        <main>
+            <div class="main-div">
+                <a href="neworder.html"><button>Ny faktura</button></a>
+                <table id="list-table" class="list-table">
+                    <thead>
+                        <tr>
+                            <th>Fakturadato</th>
+                            <th>Nr</th>
+                            <th>Kunde</th>
+                            <th>Navn</th>
+                            <th>Sum</th>
+                            <th>Forfallsdato</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                    </tbody>
+                </table>
+            </div> 
+            <script type="module" src="invoicelist.js"></script>
+        </main>
   </body>
 </html>

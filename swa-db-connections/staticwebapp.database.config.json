@@ -111,6 +111,24 @@
           "role": "anonymous"
         }
       ]
+    },
+    "invoices": {
+      "source": "invoices",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
+    },
+    "invoiceLines": {
+      "source": "e",
+      "permissions": [
+        {
+          "actions": ["*"],
+          "role": "anonymous"
+        }
+      ]
     }
   }
 }

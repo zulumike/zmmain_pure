@@ -114,3 +114,31 @@ type costs @model {
   updated_by: String
   deleted: Boolean
 }
+
+type invoiceLines {
+  id: ID
+  date: String
+  product: String
+  price: Float
+  amount: Float
+  unit: String
+  comment: String
+  user: String
+}
+
+type invoices @model {
+  id: ID
+  name: String
+  customer: Int
+  date: String
+  costed: Boolean
+  sum: Float
+  order: orders
+  cost: costs
+  invoiceLines: [invoiceLines]
+  created: String
+  created_by: String
+  updated: String
+  updated_by: String
+  deleted: Boolean
+}
