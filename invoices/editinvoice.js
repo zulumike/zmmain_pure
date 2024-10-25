@@ -240,6 +240,7 @@ async function populatedocumentForm(documentId) {
     }
     document.getElementById('name').value = invoiceData.name;
     document.getElementById('date').value = invoiceData.date;
+    document.getElementById('duedate').value = invoiceData.duedate;
     const createdText = document.getElementById('created-text');
     const updatedText = document.getElementById('updated-text');
     const createdTime = new Date(invoiceData.created);
