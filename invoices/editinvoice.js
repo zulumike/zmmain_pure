@@ -263,11 +263,16 @@ async function populatedocumentForm(documentId) {
 }
 
 async function deleteDocumentById() {
-    if (confirm('Er du sikker på at du vil slette ordren?')) {
-        loaderOn();
-        await deleteInvoice(documentId);
-        loaderOff();
-        window.location.replace('/invoices/invoicelist.html');
+    if (!invoiceData.costed) {
+        if (confirm('Er du sikker på at du vil slette faktura?')) {
+            loaderOn();
+            await deleteInvoice(documentId);
+            loaderOff();
+            window.location.replace('/invoices/invoicelist.html');
+        }
+    }
+    else {
+        alert('Faktura er bilagsført og kan ikke slettes');
     }
 }
 
