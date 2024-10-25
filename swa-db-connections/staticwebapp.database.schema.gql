@@ -131,10 +131,11 @@ type invoices @model {
   name: String
   customer: Int
   date: String
+  duedate: String
   costed: Boolean
   sum: Float
-  order: orders
-  cost: costs
+  invorder: Int
+  invcost: Int
   invoiceLines: [invoiceLines]
   created: String
   created_by: String

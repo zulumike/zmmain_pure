@@ -9,22 +9,24 @@ async function getDocumentList() {
     for (let i = 0; i < documentList.length; i++) {
         if (!documentList[i].deleted) {
             const newRow = table.insertRow(-1);
-            const orderDate = newRow.insertCell(0);
-            const orderNr = newRow.insertCell(1);
+            const invoiceDate = newRow.insertCell(0);
+            const invoiceNr = newRow.insertCell(1);
             const customerName = newRow.insertCell(2);
-            const orderName = newRow.insertCell(3);
-            const orderSum = newRow.insertCell(4);
-            const orderDueDate = newRow.insertCell(4);
-            orderDate.innerText = documentList[i].date;
-            orderNr.innerText = documentList[i].id;
+            const invoiceName = newRow.insertCell(3);
+            const invoiceSum = newRow.insertCell(4);
+            const invoiceDueDate = newRow.insertCell(4);
+            const invoiceTempDate = new Date(documentList[i].date)
+            invoiceDate.innerText = invoiceTempDate.toLocaleDateString();
+            invoiceNr.innerText = documentList[i].id;
             for (let y = 0; y < customerList.length; y++) {
                 if (documentList[i].customer == customerList[y].id) {
                     customerName.innerText = customerList[y].name;
                 }
             }
-            orderName.innerText = documentList[i].name;
-            orderSum.innerText = documentList[i].sum.toLocaleString("nb-NO", {minimumFractionDigits: 2});
-            orderDueDate.innerText = documentList[i].duedate;
+            invoiceName.innerText = documentList[i].name;
+            invoiceSum.innerText = documentList[i].sum.toLocaleString("nb-NO", {minimumFractionDigits: 2});
+            const invoiceTempDueDate = new Date(documentList[i].duedate);
+            invoiceDueDate.innerText = invoiceTempDueDate.toLocaleDateString();
             newRow.addEventListener('click', () => {
                 window.location.href = 'editinvoice.html?id=' + documentList[i].id;
             })

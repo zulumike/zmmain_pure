@@ -25,7 +25,9 @@ documentForm.addEventListener('submit', async (event) => {
     loaderOn();
     const documentFormData = new FormData(documentForm);
     const documentData = Object.fromEntries(documentFormData);
-    documentData.active = true;
+    documentData.costed = false;
+    documentData.invorder = 0;
+    documentData.invcost = 0;
     documentData.customer = parseInt(documentData.customer);
     await createInvoice(documentData);
     loaderOff();
@@ -37,7 +39,8 @@ createCustomerDropdown();
 const dateInput = document.getElementById('date');
 const dueDateInput = document.getElementById('duedate');
 const today = new Date();
-const dueDate = today.getDate() + 14
+const dueDate = new Date(today);
+dueDate.setDate(today.getDate() + 14);
 dateInput.valueAsDate = today;
 dueDateInput.valueAsDate = dueDate;
 

@@ -774,10 +774,11 @@ export async function readAllInvoices() {
                   name
                   customer
                   date
+                  duedate
                   costed
                   sum
-                  order
-                  cost
+                  invorder
+                  invcost
                   created
                   created_by
                   updated
@@ -805,10 +806,11 @@ export async function getInvoice(id) {
           name
           customer
           date
+          duedate
           costed
           sum
-          order
-          cost
+          invorder
+          invcost
           invoiceLines {
             id
             date
@@ -861,10 +863,11 @@ export async function updateInvoice(id, data) {
           name
           customer
           date
+          duedate
           costed
           sum
-          order
-          cost
+          invorder
+          invcost
           invoiceLines {
             id
             date
@@ -923,10 +926,11 @@ export async function createInvoice(data) {
           name
           customer
           date
+          duedate
           costed
           sum
-          order
-          cost
+          invorder
+          invcost
           invoiceLines {
             id
             date
@@ -983,10 +987,11 @@ export async function deleteInvoice(id) {
           name
           customer
           date
+          duedate
           costed
           sum
-          order
-          cost
+          invorder
+          invcost
           invoiceLines {
             id
             date
