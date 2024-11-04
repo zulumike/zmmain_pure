@@ -5,6 +5,7 @@ let invoiceData = {};
 let productList = [];
 
 const documentForm = document.getElementById("documentform");
+
 documentForm.addEventListener('submit', async (event) => {
     event.preventDefault();
     loaderOn();
@@ -258,7 +259,10 @@ async function populatedocumentForm(documentId) {
     if (invoiceData.invoiceLines.length > 0) {
         presentInvoiceLines();
     }
-  
+    if (invoiceData.costed) {
+        deleteBtn.hidden = true;
+        costBtn.value = 'Annuler';
+    }
     loaderOff();
 }
 
@@ -276,7 +280,27 @@ async function deleteDocumentById() {
     }
 }
 
+async function costInvoice() {
+    loaderOn();
+    if (invoiceData.costed) {
+        invoiceData.costed = false;
+        deleteBtn.hidden = false;
+        costBtn.value = 'Bokfør';
+    }
+    else {
+        invoiceData.costed = true;
+        deleteBtn.hidden = true;
+        costBtn.value = 'Annuler';
+    }
+    updateInvoice(documentId, invoiceData);
+    loaderOff();
+}
+
 const urlParams = new URLSearchParams(window.location.search);
 const documentId = urlParams.get('id');
 populatedocumentForm(documentId);
-document.getElementById('delBtn').addEventListener('click', deleteDocumentById);
+
+const deleteBtn = document.getElementById('delBtn');
+deleteBtn.addEventListener('click', deleteDocumentById);
+const costBtn = document.getElementById('costBtn');
+costBtn.addEventListener('click', costInvoice);
