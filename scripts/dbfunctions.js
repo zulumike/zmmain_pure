@@ -819,6 +819,7 @@ export async function getInvoice(id) {
             amount
             unit
             comment
+            account
             user
           }
           created
@@ -876,6 +877,7 @@ export async function updateInvoice(id, data) {
             amount
             unit
             comment
+            account
             user
           }
           created
@@ -939,6 +941,7 @@ export async function createInvoice(data) {
             amount
             unit
             comment
+            account
             user
           }
           created
@@ -1000,6 +1003,7 @@ export async function deleteInvoice(id) {
             amount
             unit
             comment
+            account
             user
           }
           created
@@ -1171,8 +1175,6 @@ export async function createCost(data) {
     const currentUser = await getUserInfo();
     data.created_by = currentUser.userDetails;
     data.deleted = false;
-    data.costLines = [];
-    data.sum = 0;
 
     const gql = `
       mutation create($item: CreatecostsInput!) {

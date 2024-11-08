@@ -7,6 +7,8 @@ documentForm.addEventListener('submit', async (event) => {
     loaderOn();
     const documentFormData = new FormData(documentForm);
     const documentData = Object.fromEntries(documentFormData);
+    documentData.costLines = [];
+    documentData.sum = 0;
     await createCost(documentData);
     loaderOff();
     window.location.replace('/costs/costlist.html');

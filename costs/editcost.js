@@ -196,7 +196,7 @@ async function populatedocumentForm(documentId) {
 }
 
 async function deleteDocumentById() {
-    if (confirm('Er du sikker på at du vil slette ordren?')) {
+    if (confirm('Er du sikker på at du vil slette bilaget?')) {
         loaderOn();
         await deleteCost(documentId);
         loaderOff();

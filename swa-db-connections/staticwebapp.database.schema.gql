@@ -123,6 +123,7 @@ type invoiceLines {
   amount: Float
   unit: String
   comment: String
+  account: Int
   user: String
 }
 

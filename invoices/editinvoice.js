@@ -1,4 +1,4 @@
-import { updateInvoice, getInvoice, deleteInvoice, readAllCustomers, readAllProducts } from "../scripts/dbfunctions.js";
+import { updateInvoice, getInvoice, deleteInvoice, readAllCustomers, readAllProducts, createCost, deleteCost } from "../scripts/dbfunctions.js";
 import { loaderOn, loaderOff } from "../scripts/functions.js";
 
 let invoiceData = {};
@@ -60,6 +60,8 @@ function presentInvoiceLines() {
     hCell7.innerText = 'Beløp:';
     const hCell8 = headingRow.insertCell(7);
     hCell8.innerText = 'Kommentar:';
+    const hCell9 = headingRow.insertCell(8);
+    hCell9.innerText = 'Konto';
     for (let i = 0; i < invoiceData.invoiceLines.length; i++) {
         const bodyRow = tableBody.insertRow(-1);
         const date = bodyRow.insertCell(0);
@@ -70,6 +72,7 @@ function presentInvoiceLines() {
         const unit = bodyRow.insertCell(5);
         const sum = bodyRow.insertCell(6);
         const comment = bodyRow.insertCell(7);
+        const account = bodyRow.insertCell(8);
         const ilDate = new Date(invoiceData.invoiceLines[i].date);
         date.innerText = ilDate.toLocaleDateString();
         product.innerText = invoiceData.invoiceLines[i].product;
@@ -80,6 +83,7 @@ function presentInvoiceLines() {
         unit.innerText = invoiceData.invoiceLines[i].unit;
         sum.innerText = (invoiceData.invoiceLines[i].price * invoiceData.invoiceLines[i].amount).toLocaleString("nb-NO", {minimumFractionDigits: 2});
         comment.innerText = invoiceData.invoiceLines[i].comment;
+        account.innerText = invoiceData.invoiceLines[i].account;
         bodyRow.addEventListener('click', () => {
             populateInvoiceLineForm(invoiceData.invoiceLines[i]);
             invoiceData.invoiceLines.splice(i, 1);
@@ -95,6 +99,7 @@ function addInvoiceLine(event, invoiceLineForm) {
     const invoiceLineData = Object.fromEntries(invoiceLineFormData);
     invoiceLineData.price = parseFloat(invoiceLineData.price);
     invoiceLineData.amount = parseFloat(invoiceLineData.amount);
+    invoiceLineData.account = parseInt(invoiceLineData.account);
     invoiceData.invoiceLines.push(invoiceLineData);
     presentInvoiceLines(invoiceData.invoiceLines);
 }
@@ -182,11 +187,23 @@ async function invoiceLineForm() {
     commentDiv.appendChild(divLabel);
     commentDiv.appendChild(emptyILComment);
 
+    const accountDiv = document.createElement('div');
+    const accountLabel = document.createElement('label');
+    accountLabel.innerText = 'Konto';
+    accountLabel.for = 'ilaccount';
+    const emptyILAccount = document.createElement('input');
+    emptyILAccount.type = 'number';
+    emptyILAccount.id = 'ilaccount';
+    emptyILAccount.name = 'account';
+    accountDiv.appendChild(accountLabel);
+    accountDiv.appendChild(emptyILAccount);
+
     // prefill inputs based on selected product
     emptyILProductId.addEventListener('change', (event) => {
         const selectedProduct = productList.find((element) => element.id == event.target.value);
         emptyILPrice.value = selectedProduct.price;
         emptyILUnit.value = selectedProduct.unit;
+        emptyILAccount.value = selectedProduct.account;
     })
 
     const submitInvoiceLine = document.createElement('input');
@@ -208,6 +225,7 @@ async function invoiceLineForm() {
     invoiceLineForm.appendChild(amountDiv);
     invoiceLineForm.appendChild(unitDiv);
     invoiceLineForm.appendChild(commentDiv);
+    invoiceLineForm.appendChild(accountDiv);
     invoiceLineForm.appendChild(submitInvoiceLine);
     invoiceLineForm.appendChild(resetInvoiceLineForm);
 }
@@ -219,6 +237,7 @@ function populateInvoiceLineForm(invoiceLineData) {
     document.getElementById('ilamount').value = invoiceLineData.amount;
     document.getElementById('ilunit').value = invoiceLineData.unit;
     document.getElementById('ilcomment').value = invoiceLineData.comment;
+    document.getElementById('ilaccount').value = invoiceLineData.account;
 }
 
 async function populatedocumentForm(documentId) {
@@ -283,11 +302,30 @@ async function deleteDocumentById() {
 async function costInvoice() {
     loaderOn();
     if (invoiceData.costed) {
+        await deleteCost(invoiceData.invcost.toString());
         invoiceData.costed = false;
         deleteBtn.hidden = false;
         costBtn.value = 'Bokfør';
     }
     else {
+        const costLineArray = [];
+        for (let i = 0; i < invoiceData.invoiceLines.length; i++) {
+            costLineArray.push({
+                date: invoiceData.date,
+                account: invoiceData.invoiceLines[i].account,
+                price: invoiceData.invoiceLines[i].price,
+                description: invoiceData.invoiceLines[i].comment
+            });
+        }
+        const costingData = {
+            date: invoiceData.date,
+            description: 'Faktura ' + invoiceData.id,
+            costLines: costLineArray,
+            sum: invoiceData.sum
+        };
+        console.log(costingData);
+        const costResponse = await createCost(costingData);
+        invoiceData.invcost = parseInt(costResponse.id);
         invoiceData.costed = true;
         deleteBtn.hidden = true;
         costBtn.value = 'Annuler';
