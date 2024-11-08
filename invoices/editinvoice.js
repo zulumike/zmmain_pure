@@ -84,11 +84,13 @@ function presentInvoiceLines() {
         sum.innerText = (invoiceData.invoiceLines[i].price * invoiceData.invoiceLines[i].amount).toLocaleString("nb-NO", {minimumFractionDigits: 2});
         comment.innerText = invoiceData.invoiceLines[i].comment;
         account.innerText = invoiceData.invoiceLines[i].account;
-        bodyRow.addEventListener('click', () => {
-            populateInvoiceLineForm(invoiceData.invoiceLines[i]);
-            invoiceData.invoiceLines.splice(i, 1);
-            presentInvoiceLines();
-        });
+        if (!invoiceData.costed) {
+            bodyRow.addEventListener('click', () => {
+                populateInvoiceLineForm(invoiceData.invoiceLines[i]);
+                invoiceData.invoiceLines.splice(i, 1);
+                presentInvoiceLines();
+            });
+        }
     }
     const invoiceSumText = document.getElementById('invoicesumtext');
     invoiceSumText.innerText = 'Fakturasum: ' + calculateInvoice().toLocaleString("nb-NO", {minimumFractionDigits: 2});
@@ -105,7 +107,6 @@ function addInvoiceLine(event, invoiceLineForm) {
 }
 
 async function invoiceLineForm() {
-    productList = await readAllProducts();
     const invoiceLineForm = document.getElementById('invoicelineform');
     const dateDiv = document.createElement('div');
     const dateLabel = document.createElement('label');
@@ -274,12 +275,25 @@ async function populatedocumentForm(documentId) {
     else {
         updatedText.remove();
     }
-    await invoiceLineForm();
+    productList = await readAllProducts();
+    if (!invoiceData.costed) {
+        await invoiceLineForm();
+    }
     if (invoiceData.invoiceLines.length > 0) {
         presentInvoiceLines();
     }
     if (invoiceData.costed) {
-        deleteBtn.hidden = true;
+        const formCustomer = document.getElementById('customer');
+        formCustomer.disabled = true;
+        const formName = document.getElementById('name');
+        formName.disabled = true;
+        const formDate = document.getElementById('date');
+        formDate.disabled = true;
+        const formDueDate = document.getElementById('duedate');
+        formDueDate.disabled = true;
+        const formSubmitBtn = document.getElementById('submitbtn');
+        formSubmitBtn.disabled = true;
+        formSubmitBtn.style.display = 'none';
         costBtn.value = 'Annuler';
     }
     loaderOff();
@@ -323,15 +337,14 @@ async function costInvoice() {
             costLines: costLineArray,
             sum: invoiceData.sum
         };
-        console.log(costingData);
         const costResponse = await createCost(costingData);
         invoiceData.invcost = parseInt(costResponse.id);
         invoiceData.costed = true;
         deleteBtn.hidden = true;
         costBtn.value = 'Annuler';
     }
-    updateInvoice(documentId, invoiceData);
-    loaderOff();
+    await updateInvoice(documentId, invoiceData);
+    location.reload();
 }
 
 const urlParams = new URLSearchParams(window.location.search);
