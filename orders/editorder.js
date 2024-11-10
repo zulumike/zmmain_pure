@@ -144,6 +144,7 @@ async function orderLineForm() {
     emptyOLAmount.type = 'number';
     emptyOLAmount.id = 'olamount';
     emptyOLAmount.name = 'amount';
+    emptyOLAmount.step = '0.01';
     emptyOLAmount.value = 1;
     amountDiv.appendChild(amountLabel);
     amountDiv.appendChild(emptyOLAmount);
@@ -167,6 +168,7 @@ async function orderLineForm() {
     emptyOLPrice.type = 'number';
     emptyOLPrice.id = 'olprice';
     emptyOLPrice.name = 'price';
+    emptyOLPrice.step = '0.01'
     priceDiv.appendChild(priceLabel);
     priceDiv.appendChild(emptyOLPrice);
 

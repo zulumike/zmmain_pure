@@ -151,6 +151,7 @@ async function invoiceLineForm() {
     emptyILAmount.type = 'number';
     emptyILAmount.id = 'ilamount';
     emptyILAmount.name = 'amount';
+    emptyILAmount.step = '0.01';
     emptyILAmount.value = 1;
     amountDiv.appendChild(amountLabel);
     amountDiv.appendChild(emptyILAmount);
@@ -174,6 +175,7 @@ async function invoiceLineForm() {
     emptyILPrice.type = 'number';
     emptyILPrice.id = 'ilprice';
     emptyILPrice.name = 'price';
+    emptyILPrice.step = '0.01';
     priceDiv.appendChild(priceLabel);
     priceDiv.appendChild(emptyILPrice);
 

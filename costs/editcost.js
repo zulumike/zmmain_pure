@@ -12,9 +12,11 @@ documentForm.addEventListener('submit', async (event) => {
     const documentData = Object.fromEntries(documentFormData);
     documentData.costLines = costData.costLines;
     documentData.sum = calculateCost();
+    console.table(documentData.costLines);
+    console.log(typeof(documentData.costLines[2].price));
     await updateCost(documentId, documentData);
     loaderOff();
-    window.location.replace('/costs/costlist.html');
+    // window.location.replace('/costs/costlist.html');
 })
 
 function calculateCost() {
@@ -76,7 +78,9 @@ function addCostLine(event, costLineForm) {
     const costLineFormData = new FormData(costLineForm);
     const costLineData = Object.fromEntries(costLineFormData);
     costLineData.account = parseInt(costLineData.account);
-    costLineData.price = parseFloat(costLineData.price);
+    console.log(typeof(costLineData.price));
+    costLineData.price = Number(costLineData.price);
+    console.log(typeof(costLineData.price));
     costData.costLines.push(costLineData);
     presentcostLines();
 }
@@ -126,6 +130,7 @@ async function costLineForm() {
     emptyCLPrice.type = 'number';
     emptyCLPrice.id = 'clprice';
     emptyCLPrice.name = 'price';
+    emptyCLPrice.step = '0.01';
     priceDiv.appendChild(priceLabel);
     priceDiv.appendChild(emptyCLPrice);
 

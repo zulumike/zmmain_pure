@@ -1162,6 +1162,7 @@ export async function updateCost(id, data) {
     });
   
     const result = await res.json();
+    console.log(result);
     return result.data.updatecosts;
   }
 
