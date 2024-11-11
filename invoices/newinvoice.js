@@ -28,6 +28,8 @@ documentForm.addEventListener('submit', async (event) => {
     documentData.costed = false;
     documentData.invorder = 0;
     documentData.invcost = 0;
+    documentData.invoiceLines = [];
+    documentData.sum = 0;
     documentData.customer = parseInt(documentData.customer);
     await createInvoice(documentData);
     loaderOff();

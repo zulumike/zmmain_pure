@@ -1,4 +1,4 @@
-import { updateOrder, getOrder, deleteOrder, readAllCustomers, readAllProducts } from "../scripts/dbfunctions.js";
+import { updateOrder, getOrder, deleteOrder, readAllCustomers, readAllProducts, createInvoice } from "../scripts/dbfunctions.js";
 import { loaderOn, loaderOff } from "../scripts/functions.js";
 
 let orderData = {};
@@ -184,10 +184,12 @@ async function orderLineForm() {
     commentDiv.appendChild(emptyOLComment);
 
     // prefill inputs based on selected product
+    let productAccount = 3000;
     emptyOLProductId.addEventListener('change', (event) => {
         const selectedProduct = productList.find((element) => element.id == event.target.value);
         emptyOLPrice.value = selectedProduct.price;
         emptyOLUnit.value = selectedProduct.unit;
+        productAccount = selectedProduct.account;
     })
 
     const submitOrderLine = document.createElement('input');
@@ -195,6 +197,7 @@ async function orderLineForm() {
     submitOrderLine.value = 'Legg til';
     
     orderLineForm.addEventListener('submit', (event) => {
+        orderLineForm.account = productAccount.toString();
         addOrderLine(event, orderLineForm);
         orderLineForm.reset();
         emptyOLDate.valueAsDate = today;
@@ -263,6 +266,25 @@ async function populatedocumentForm(documentId) {
     loaderOff();
 }
 
+async function createInvoiceFromOrder() {
+    const today = new Date();
+    const dueDate = new Date(today);
+    dueDate.setDate(today.getDate() + 14);
+    const invoiceData = {
+        name: orderData.name,
+        customer: orderData.customer,
+        date: today,
+        duedate: dueDate,
+        costed: false,
+        sum: orderData.sum,
+        invorder: parseInt(orderData.id),
+        invcost: 0,
+        invoiceLines: orderData.orderLines
+    };
+    const dbResponse = await createInvoice(invoiceData);
+    alert('Faktura ' + dbResponse.id + ' opprettet!');
+}
+
 async function deleteDocumentById() {
     if (confirm('Er du sikker på at du vil slette ordren?')) {
         loaderOn();
@@ -276,3 +298,4 @@ const urlParams = new URLSearchParams(window.location.search);
 const documentId = urlParams.get('id');
 populatedocumentForm(documentId);
 document.getElementById('delBtn').addEventListener('click', deleteDocumentById);
+document.getElementById('invoiceBtn').addEventListener('click', createInvoiceFromOrder);

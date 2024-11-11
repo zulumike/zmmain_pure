@@ -94,6 +94,10 @@ function presentInvoiceLines() {
     }
     const invoiceSumText = document.getElementById('invoicesumtext');
     invoiceSumText.innerText = 'Fakturasum: ' + calculateInvoice().toLocaleString("nb-NO", {minimumFractionDigits: 2});
+    if (invoiceData.invorder > 0) {
+        const invoiceOrderText = document.getElementById('invoiceordertext');
+        invoiceOrderText.innerText = 'Ordrenr: ' + invoiceData.invorder;
+    };
 }
 function addInvoiceLine(event, invoiceLineForm) {
     event.preventDefault();

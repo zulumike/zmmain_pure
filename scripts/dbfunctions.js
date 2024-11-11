@@ -918,8 +918,6 @@ export async function createInvoice(data) {
   const currentUser = await getUserInfo();
   data.created_by = currentUser.userDetails;
   data.deleted = false;
-  data.invoiceLines = [];
-  data.sum = 0;
 
   const gql = `
     mutation create($item: CreateinvoicesInput!) {
