@@ -12,11 +12,9 @@ documentForm.addEventListener('submit', async (event) => {
     const documentData = Object.fromEntries(documentFormData);
     documentData.costLines = costData.costLines;
     documentData.sum = calculateCost();
-    console.table(documentData.costLines);
-    console.log(typeof(documentData.costLines[2].price));
     await updateCost(documentId, documentData);
     loaderOff();
-    // window.location.replace('/costs/costlist.html');
+    window.location.replace('/costs/costlist.html');
 })
 
 function calculateCost() {
@@ -34,7 +32,6 @@ function presentcostLines() {
     if (existingTable != null) {
         existingTable.remove();
     }
-    console.log(costData.costLines);
     const costLineDiv = document.getElementById('costlinediv');
     const clTable = document.createElement('table');
     clTable.classList = ['list-table'];
@@ -78,9 +75,7 @@ function addCostLine(event, costLineForm) {
     const costLineFormData = new FormData(costLineForm);
     const costLineData = Object.fromEntries(costLineFormData);
     costLineData.account = parseInt(costLineData.account);
-    console.log(typeof(costLineData.price));
     costLineData.price = Number(costLineData.price);
-    console.log(typeof(costLineData.price));
     costData.costLines.push(costLineData);
     presentcostLines();
 }
