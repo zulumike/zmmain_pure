@@ -1,4 +1,4 @@
-import { getUserInfo } from "../scripts/auth.js";
+// import { getUserInfo } from "../scripts/auth.js";
 
 // #####################################################################################
 // #                                                                        COMPANY    #

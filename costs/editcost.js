@@ -69,6 +69,13 @@ function presentcostLines() {
     }
     const costSumText = document.getElementById('costsumtext');
     costSumText.innerText = 'Bilagsum: ' + calculateCost().toLocaleString("nb-NO", {minimumFractionDigits: 2});
+    const costToInvoiceBtnDiv = document.getElementById('costtoinvoicebtn');
+    const costToInvoiceBtn = document.createElement('button');
+    costToInvoiceBtn.innerHTML = 'Fordel til faktura';
+    costToInvoiceBtn.addEventListener('click', () => {
+        window.location.href = 'costtoinvoice.html?id=' + costData.id + '&sum=' + costData.sum;
+    });
+    costToInvoiceBtnDiv.appendChild(costToInvoiceBtn);
 }
 function addCostLine(event, costLineForm) {
     event.preventDefault();
