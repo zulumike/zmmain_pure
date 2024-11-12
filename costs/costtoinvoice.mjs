@@ -2,6 +2,7 @@ import { readAllCustomers, createInvoice } from "../scripts/dbfunctions.js";
 import { loaderOn, loaderOff } from "../scripts/functions.js";
 
 let customers = [];
+let pricePerCust = 0;
 
 function calculatePrice() {
     let invoiceData = [];
@@ -24,15 +25,47 @@ function calculatePrice() {
     const returnData = {
         invoiceData: invoiceData,
         totalAmount: totalAmount,
-        invoiceAmount: invoiceAmount
+        invoiceAmount: invoiceAmount,
+        description: formObjects.description,
+        unitPrice: parseFloat(formObjects.price)
+        
     }
     return returnData;
 }
 
-function calculateInvoices(pricePerCust) {
+function calculateInvoices(givenPrice = pricePerCust) {
     const returnedData = calculatePrice();
-    const invoicesSum = pricePerCust * returnedData.totalAmount;
+    const invoicesSum = givenPrice * returnedData.totalAmount;
     invoiceInfoText.innerText = 'Antall faktura: ' + returnedData.invoiceAmount + ' Totalsum fakturaer: ' + invoicesSum;
+}
+
+async function createInvoices() {
+    const returnedData = calculatePrice();
+    const invoiceData = returnedData.invoiceData;
+    const today = new Date();
+    const dueDate = new Date(today);
+    dueDate.setDate(today.getDate() + 14);
+    for (let i = 0; i < invoiceData.length; i++) {
+        let documentData = {};
+        documentData.date = today;
+        documentData.duedate = dueDate;
+        documentData.customer = parseInt(invoiceData[i].customer);
+        documentData.name = returnedData.description;
+        documentData.invcost = costId;
+        const invoiceLines = [
+            {
+                price: returnedData.unitPrice,
+                amount: invoiceData[i].amount,
+                unit: 'stk',
+                account: 3000
+            }
+        ]
+        documentData.invoiceLines = invoiceLines;
+        documentData.sum = returnedData.unitPrice * invoiceData[i].amount;
+        console.log(documentData);
+        const dbResult = await createInvoice(documentData);
+        console.log(dbResult);
+    }
 }
 
 async function alterForm() {
@@ -53,7 +86,7 @@ async function alterForm() {
             nrInput.addEventListener('change', () => {
                 const returnedData = calculatePrice();
                 pricePerCustomerInput.value = costSum / returnedData.totalAmount;
-                calculateInvoices(costSum / returnedData.totalAmount)
+                calculateInvoices(costSum / returnedData.totalAmount);
             })
         }
     }
@@ -64,6 +97,7 @@ async function alterForm() {
     costForm.addEventListener('submit', async (event) => {
         event.preventDefault();
         loaderOn();
+        await createInvoices();
         loaderOff();
         // window.location.replace('/costs/costlist.html');
     });
@@ -90,7 +124,8 @@ const costForm = document.getElementById('costform');
 const invoiceInfoText = document.getElementById('invoiceinfo');
 const pricePerCustomerInput = document.getElementById('price');
 pricePerCustomerInput.addEventListener('change', (event) => {
-    calculateInvoices(event.target.value);
+    pricePerCust = event.target.value;
+    calculateInvoices();
 })
 
 alterForm();
