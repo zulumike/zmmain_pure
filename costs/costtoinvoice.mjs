@@ -1,7 +1,8 @@
-import { readAllCustomers, createInvoice } from "../scripts/dbfunctions.js";
+import { readAllCustomers, readAllProducts, createInvoice } from "../scripts/dbfunctions.js";
 import { loaderOn, loaderOff } from "../scripts/functions.js";
 
 let customers = [];
+let productList = [];
 let pricePerCust = 0;
 
 function calculatePrice() {
@@ -11,7 +12,7 @@ function calculatePrice() {
     const formData = new FormData(costForm);
     const formObjects = Object.fromEntries(formData);
     const objectArray = Object.keys(formObjects);
-    for (let i = 0; i < (objectArray.length - 2); i++) {
+    for (let i = 0; i < (objectArray.length - 3); i++) {
         const custInvoice = {
             customer: parseInt(objectArray[i]),
             amount: parseFloat(formObjects[objectArray[i]])
@@ -27,8 +28,8 @@ function calculatePrice() {
         totalAmount: totalAmount,
         invoiceAmount: invoiceAmount,
         description: formObjects.description,
+        product: formObjects.product,
         unitPrice: parseFloat(formObjects.price)
-        
     }
     return returnData;
 }
@@ -47,13 +48,15 @@ async function createInvoices() {
     dueDate.setDate(today.getDate() + 14);
     for (let i = 0; i < invoiceData.length; i++) {
         let documentData = {};
-        documentData.date = today;
-        documentData.duedate = dueDate;
+        documentData.date = today.toJSON().slice(0, 10);
+        documentData.duedate = dueDate.toJSON().slice(0, 10);
         documentData.customer = parseInt(invoiceData[i].customer);
         documentData.name = returnedData.description;
         documentData.invcost = costId;
         const invoiceLines = [
             {
+                date: today.toJSON().slice(0, 10),
+                product: returnedData.product,
                 price: returnedData.unitPrice,
                 amount: invoiceData[i].amount,
                 unit: 'stk',
@@ -70,6 +73,20 @@ async function createInvoices() {
 
 async function alterForm() {
     customers = await readAllCustomers();
+    productList = await readAllProducts();
+    const productSelect = document.getElementById('product');
+    const blankProduct = document.createElement('option');
+    blankProduct.textContent = 'Velg produkt';
+    productSelect.appendChild(blankProduct);
+    for (let i = 0; i < productList.length; i++) {
+        if (productList[i].active) {
+            const productOption = document.createElement('option');
+            productOption.textContent = productList[i].id.toString() + '-' + productList[i].name;
+            productOption.value = productList[i].id;
+            productOption.id = productList[i].id;
+            productSelect.appendChild(productOption);
+        }
+    }
     for (let i = 0; i < customers.length; i++) {
         if (!customers[i].deleted) {
             const nrLabel = document.createElement('label');
@@ -99,7 +116,7 @@ async function alterForm() {
         loaderOn();
         await createInvoices();
         loaderOff();
-        // window.location.replace('/costs/costlist.html');
+        window.location.replace('/invoices/invoicelist.html');
     });
     const cancelBtn = document.createElement('input');
     cancelBtn.type = 'button';

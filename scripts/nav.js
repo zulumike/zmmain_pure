@@ -6,7 +6,7 @@ navTemplate.innerHTML = `
         <li id="navproducts"><a href="/products/productlist.html">Produkter</a></li>
         <li id="navorders"><a href="/orders/orderlist.html">Ordrer</a></li>
         <li id="navinvoices"><a href="/invoices/invoicelist.html">Faktura</a></li>
-        <li id="navcosts"><a href="/costs/costlist.html">Billag</a></li>
+        <li id="navcosts"><a href="/costs/costlist.html">Bilag</a></li>
         <li id="navadmin"><a href="/admin/admin.html">Admin</a></li>
     </ul>
     <div class="burger">
